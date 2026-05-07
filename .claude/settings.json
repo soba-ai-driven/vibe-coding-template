@@ -1,0 +1,60 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(npm run format)",
+      "Bash(npm test)",
+      "Bash(npm run test:*)",
+      "Bash(npm run db:*)",
+      "Bash(npx playwright *)",
+      "Bash(npx shadcn *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push origin staging)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git pull *)",
+      "Bash(openssl rand *)"
+    ],
+    "deny": [
+      "Bash(git push origin main)",
+      "Bash(git push --force *)",
+      "Bash(rm -rf *)"
+    ]
+  },
+  "network": {
+    "allowedDomains": [
+      "registry.npmjs.org",
+      "github.com",
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "objects.githubusercontent.com",
+      "vercel.com",
+      "api.vercel.com",
+      "neon.tech",
+      "console.neon.tech",
+      "*.neon.tech",
+      "api.openai.com",
+      "playwright.azureedge.net",
+      "playwright-akamai.azureedge.net",
+      "cdn.playwright.dev",
+      "developers.line.biz",
+      "api.line.me",
+      "discord.com",
+      "discordapp.com",
+      "slack.com",
+      "api.slack.com",
+      "api.chatwork.com",
+      "ui.shadcn.com",
+      "fonts.googleapis.com",
+      "fonts.gstatic.com",
+      "registry.cloudflare.com"
+    ]
+  }
+}
