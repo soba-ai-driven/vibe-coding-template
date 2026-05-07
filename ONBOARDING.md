@@ -201,39 +201,53 @@ Neon の登録が完了したことを案内役に伝えてください。
 
 > ⚠️ この手順は**管理者権限**が必要です。
 
-** 1. PowerShell を管理者として開く**
+---
 
-タスクバー左下の検索欄（虫眼鏡アイコン）に `powershell` と入力し、検索結果に表示された **「Windows PowerShell」** を右クリック → **「管理者として実行」** を選ぶ。
+#### 方法A: インストーラーを使う（推奨・PowerShell 不要）
 
-「このアプリがデバイスに変更を加えることを許可しますか？」と聞かれたら **「はい」** をクリックする。
+** 1. Node.js のインストーラーをダウンロードする**
+
+下記リンクを新しいタブで開いてください。
+
+https://nodejs.org/en/download
+
+ページ内の **「Windows Installer (.msi)」** をクリックしてダウンロードする。
+
+> 💡 「LTS」と書かれたバージョンを選んでください（安定版）。
 
 ** 2. Node.js をインストールする**
 
-PowerShell の黒い画面に以下を貼り付けて **Enter** を押す:
+ダウンロードした `.msi` ファイルをダブルクリックして実行する。
 
-```powershell
-winget install OpenJS.NodeJS.LTS --silent --accept-source-agreements --accept-package-agreements
-```
+インストーラーが起動したら **「Next」→「Next」→「Install」** と進む。
+「このアプリがデバイスに変更を加えることを許可しますか？」と聞かれたら **「はい」** をクリック。
 
-`Successfully installed` と表示されれば完了。
+完了画面で **「Finish」** を押す。
 
-** 3. Git for Windows をインストールする**
+** 3. Git for Windows のインストーラーをダウンロードする**
 
-続けて以下を貼り付けて **Enter** を押す:
+下記リンクを新しいタブで開いてください。
 
-```powershell
-winget install Git.Git --silent --accept-source-agreements --accept-package-agreements
-```
+https://git-scm.com/download/win
 
-`Successfully installed` と表示されれば完了。
+**「64-bit Git for Windows Setup」** をクリックしてダウンロードする。
 
-** 4. PowerShell を閉じて開き直す**
+** 4. Git for Windows をインストールする**
 
-インストール後は PATH（プログラムの場所情報）を更新するため、PowerShell を一度閉じて再度開く。（管理者権限は不要、通常の起動でよい）
+ダウンロードした `.exe` ファイルをダブルクリックして実行する。
 
-** 5. インストールを確認する**
+インストーラーが起動したら **「Next」** を押し続け、すべてデフォルトのまま **「Install」** を押す。
+完了画面で **「Finish」** を押す。
 
-PowerShell に以下を1行ずつ入力して Enter:
+** 5. PC を再起動する**
+
+インストール後は PC を一度再起動して PATH（プログラムの場所情報）を更新する。
+
+** 6. インストールを確認する**
+
+タスクバーの検索欄に `powershell` と入力し **「Windows PowerShell」** を起動する（管理者権限は不要）。
+
+以下を1行ずつ入力して **Enter**:
 
 ```powershell
 node --version
@@ -243,7 +257,22 @@ git --version
 
 それぞれ `v20.x.x`、`10.x.x`、`git version 2.x.x` のようにバージョン番号が返ってきたら OK。
 
-> ⚠️ 「認識されていません」と出た場合はトラブルシューティングを参照してください。
+> ⚠️ 「認識されていません」と出た場合は再起動が必要か、インストールが完了していない可能性があります。トラブルシューティングを参照してください。
+
+---
+
+#### 方法B: winget を使う（PowerShell が使える場合）
+
+タスクバーの検索欄に `powershell` と入力し、**「Windows PowerShell」** を右クリック → **「管理者として実行」** を選ぶ。
+
+以下を1行ずつ貼り付けて **Enter**:
+
+```powershell
+winget install OpenJS.NodeJS.LTS --silent --accept-source-agreements --accept-package-agreements
+winget install Git.Git --silent --accept-source-agreements --accept-package-agreements
+```
+
+完了後、PowerShell を閉じて開き直し、方法Aの手順 6 と同様に確認する。
 
 ---
 
