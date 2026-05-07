@@ -73,7 +73,8 @@ https://github.com/signup
 
 ### 1.2 Vercel アカウントを作る
 
-Vercel は、作ったアプリをインターネット上に公開するためのサービスです。**GitHub アカウントでそのままサインインできます**。
+Vercel は、作ったアプリをインターネット上に公開するためのサービスです。
+**GitHub アカウントでサインインする想定です**。
 
 #### 手順
 
@@ -83,43 +84,53 @@ Vercel は、作ったアプリをインターネット上に公開するため�
 
 https://vercel.com/signup
 
-** 2. 「Continue with GitHub」を選ぶ**
+
+** 2. Plan Type を選ぶ **
+
+●I'm working on persona projects [Hobby] をクリック
+
+
+** 3. Your Name を入力し [Continue]をクリック ** 
+
+> 自分の名前に近い**英数字とハイフンだけ**の名前を入力
+
+** 4. 「Continue with GitHub」を選ぶ**
 
 画面に複数のサインイン方法が表示されます。**「Continue with GitHub」** と書かれたボタンをクリックする。
 
-** 3. GitHub の認可画面で承認する**
+** 5. GitHub の認可画面で承認する**
 
-「Authorize Vercel」というタイトルのページが開きます。内容を確認して **「Authorize vercel」** ボタン（緑色）をクリックする。
+「Authorize Vercel」というタイトルのページが開きます。 **「Continue」** ボタン（緑色）をクリックする。
 
 > ⚠️ このページが開かない場合: ブラウザで GitHub にサインインできているか確認してください。
 
-** 4. 初期設定の質問に答える**
+
+** 6. 初期設定の質問に答える**
 
 「What's your name?」や「What will you be using Vercel for?」などの質問画面が表示されたら、回答して **「Continue」** を押す（内容はなんでも構いません）。
 
 Vercel のダッシュボード（プロジェクト一覧画面）が表示されれば登録完了です。
 
-** 5. 案内役に完了を伝える**
+** 7. 案内役に完了を伝える**
 
 Vercel の登録が完了したことを案内役に伝えてください。
 
 > 🚦 **案内役の作業**: 下記リンクから受講者を招待する。
 >
-> https://vercel.com/teams/soba-ai-driven/settings/members
+> https://vercel.com/soba-ai-driven/~/settings/members
+** 8. Vercel Team への招待メールを承認する**
 
-** 6. Vercel Team への招待メールを承認する**
-
-「You've been invited to join the soba-ai-driven team on Vercel」という件名のメールが届きます。
+しばらくすると「*** invited you to the SOBA AI Driven team on Vercel」という件名のメールが届きます。
 
 1. メールを開く
-2. **「Join Team」** または **「Accept Invite」** ボタンをクリック
+2. **「Join the team」** ボタンをクリック
 3. Vercel の画面で `soba-ai-driven` のダッシュボードに切り替わったら完了
 
 ---
 
 ### 1.3 Neon アカウントを作る
 
-Neon は、アプリのデータ（例: ユーザー情報や記録）を保存するデータベースサービスです。こちらも **GitHub アカウントでサインインできます**。
+Neon は、アプリのデータ（例: ユーザー情報や記録）を保存するデータベースサービスです。こちらも **GitHub アカウントでサインインしましょう**。
 
 #### 手順
 
@@ -129,34 +140,41 @@ Neon は、アプリのデータ（例: ユーザー情報や記録）を保存�
 
 https://console.neon.tech/signup
 
-** 2. 「Continue with GitHub」を選ぶ**
+** 2. 「Continue to Neon with」で 「GitHub」をクリック**
 
-**「Continue with GitHub」** ボタンをクリックする。
 
 ** 3. GitHub の認可画面で承認する**
 
-「Authorize neon-database」というタイトルのページが開きます。**「Authorize neon-database」** ボタン（緑色）をクリックする。
+「Authorize Neon Console」というタイトルのページが開きます。**「Authorize neondatabase」** ボタン（緑色）をクリックする。
 
-** 4. Neon のダッシュボードを確認する**
 
-プロジェクト一覧画面（「Neon Console」のような画面）が表示されれば登録完了です。
+** 4. Welcome to Neon で以下を入力し[Next]をクリック**
 
-> ⚠️ 「Create your first project」というボタンが表示されても、**ここでは何も作らないでください**。後で Claude が自動で作ります。
+> Organization name: 変更なしでOK
+> What's this organnization for?: 変更なし(Personal projects)でOK
 
-** 5. 案内役に完了を伝える**
+
+** 5. Now, let's create your first project. が表示されることを確認する**
+
+表示されれば登録完了です。
+
+> ⚠️ 「Create project」というボタンが表示されても、**ここでは何も作らないでください**。
+
+
+** 6. 案内役に完了を伝える**
 
 Neon の登録が完了したことを案内役に伝えてください。
 
 > 🚦 **案内役の作業**: 下記リンクから受講者を招待する。
 >
-> https://console.neon.tech/app/org-empty-waterfall-10829916/settings/members
+> https://console.neon.tech/app/org-empty-waterfall-10829916/people
 
 ** 6. Neon Organization への招待メールを承認する**
 
-「You've been invited to join SOBA AI Driven on Neon」という件名のメールが届きます。
+「xxxx has  invited you to join SOBA AI Driven」という件名のメールが届きます。
 
 1. メールを開く
-2. **「Accept Invitation」** ボタンをクリック
+2. **「Go to SOBA AI Driven」** ボタンをクリック
 3. Neon の画面左上の組織名が「SOBA AI Driven」に切り替わったら完了
 
 ---
@@ -165,10 +183,9 @@ Neon の登録が完了したことを案内役に伝えてください。
 
 次の Part 2 に進む前に、以下を確認してください:
 
-- [ ] GitHub にサインインできている（ https://github.com を開くと自分のアイコンが右上に表示される）
-- [ ] `soba-ai-driven` の GitHub Organization のメンバーになっている
+- [ ] GitHub にサインインできている（ https://github.com/soba-ai-driven/vibe-coding-template が表示できる）
 - [ ] Vercel にサインインできている（ https://vercel.com/soba-ai-driven が開ける）
-- [ ] Neon にサインインできている（左上の組織名が「SOBA AI Driven」になっている）
+- [ ] Neon にサインインできている（ https://console.neon.tech/app/org-empty-waterfall-10829916/people が開ける）
 
 1つでもチェックできない場合は案内役に相談してください。
 
