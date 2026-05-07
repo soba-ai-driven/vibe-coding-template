@@ -77,35 +77,37 @@ Vercel は、作ったアプリをインターネット上に公開するため�
 
 #### 手順
 
-**① Vercel のサインアップページを開く**
+** 1. サインアップページを開く**
 
 下記リンクを新しいタブで開いてください。
 
 https://vercel.com/signup
 
-**② 「Continue with GitHub」を選ぶ**
+** 2. 「Continue with GitHub」を選ぶ**
 
 画面に複数のサインイン方法が表示されます。**「Continue with GitHub」** と書かれたボタンをクリックする。
 
-**③ GitHub の認可画面で承認する**
+** 3. GitHub の認可画面で承認する**
 
 「Authorize Vercel」というタイトルのページが開きます。内容を確認して **「Authorize vercel」** ボタン（緑色）をクリックする。
 
 > ⚠️ このページが開かない場合: ブラウザで GitHub にサインインできているか確認してください。
 
-**④ Vercel の初期設定をスキップする**
+** 4. 初期設定の質問に答える**
 
 「What's your name?」や「What will you be using Vercel for?」などの質問画面が表示されたら、回答して **「Continue」** を押す（内容はなんでも構いません）。
 
 Vercel のダッシュボード（プロジェクト一覧画面）が表示されれば登録完了です。
 
-**⑤ 案内役に完了を伝える**
+** 5. 案内役に完了を伝える**
 
 Vercel の登録が完了したことを案内役に伝えてください。
 
-> 🚦 **案内役の作業**: https://vercel.com/teams/soba-ai-driven/settings/members から受講者を招待する。
+> 🚦 **案内役の作業**: 下記リンクから受講者を招待する。
+>
+> https://vercel.com/teams/soba-ai-driven/settings/members
 
-**⑥ Vercel Team への招待メールを承認する**
+** 6. Vercel Team への招待メールを承認する**
 
 「You've been invited to join the soba-ai-driven team on Vercel」という件名のメールが届きます。
 
@@ -121,33 +123,35 @@ Neon は、アプリのデータ（例: ユーザー情報や記録）を保存�
 
 #### 手順
 
-**① Neon のサインアップページを開く**
+** 1. サインアップページを開く**
 
 下記リンクを新しいタブで開いてください。
 
 https://console.neon.tech/signup
 
-**② 「Continue with GitHub」を選ぶ**
+** 2. 「Continue with GitHub」を選ぶ**
 
 **「Continue with GitHub」** ボタンをクリックする。
 
-**③ GitHub の認可画面で承認する**
+** 3. GitHub の認可画面で承認する**
 
 「Authorize neon-database」というタイトルのページが開きます。**「Authorize neon-database」** ボタン（緑色）をクリックする。
 
-**④ Neon のダッシュボードを確認する**
+** 4. Neon のダッシュボードを確認する**
 
 プロジェクト一覧画面（「Neon Console」のような画面）が表示されれば登録完了です。
 
 > ⚠️ 「Create your first project」というボタンが表示されても、**ここでは何も作らないでください**。後で Claude が自動で作ります。
 
-**⑤ 案内役に完了を伝える**
+** 5. 案内役に完了を伝える**
 
 Neon の登録が完了したことを案内役に伝えてください。
 
-> 🚦 **案内役の作業**: https://console.neon.tech/app/org-empty-waterfall-10829916/settings/members から受講者を招待する。
+> 🚦 **案内役の作業**: 下記リンクから受講者を招待する。
+>
+> https://console.neon.tech/app/org-empty-waterfall-10829916/settings/members
 
-**⑥ Neon Organization への招待メールを承認する**
+** 6. Neon Organization への招待メールを承認する**
 
 「You've been invited to join SOBA AI Driven on Neon」という件名のメールが届きます。
 
@@ -170,153 +174,323 @@ Neon の登録が完了したことを案内役に伝えてください。
 
 ---
 
-## Part 2: ローカル環境準備（15分）
+## Part 2: ローカル環境準備（約15分）
 
-### 2.1 Node.js + Git for Windows をインストール（管理者権限が必要）
+> ⚠️ Claude Code（Code タブ）が `npm install` や `git push` をローカルで実行するため、Node.js と Git のインストールが必要です。
 
-> ⚠️ Claude Code（Code タブ）が `npm install` や `git push` をローカルで実行するため、これらが PATH に通っている必要があります。
+---
 
-PowerShell を**管理者として**開き、以下を実行:
+### 2.1 Node.js と Git for Windows をインストールする
+
+> ⚠️ この手順は**管理者権限**が必要です。
+
+** 1. PowerShell を管理者として開く**
+
+タスクバー左下の検索欄（虫眼鏡アイコン）に `powershell` と入力し、検索結果に表示された **「Windows PowerShell」** を右クリック → **「管理者として実行」** を選ぶ。
+
+「このアプリがデバイスに変更を加えることを許可しますか？」と聞かれたら **「はい」** をクリックする。
+
+** 2. Node.js をインストールする**
+
+PowerShell の黒い画面に以下を貼り付けて **Enter** を押す:
 
 ```powershell
 winget install OpenJS.NodeJS.LTS --silent --accept-source-agreements --accept-package-agreements
+```
+
+`Successfully installed` と表示されれば完了。
+
+** 3. Git for Windows をインストールする**
+
+続けて以下を貼り付けて **Enter** を押す:
+
+```powershell
 winget install Git.Git --silent --accept-source-agreements --accept-package-agreements
 ```
 
-インストール後、**PowerShell を一度閉じて開き直し**、以下で確認:
+`Successfully installed` と表示されれば完了。
+
+** 4. PowerShell を閉じて開き直す**
+
+インストール後は PATH（プログラムの場所情報）を更新するため、PowerShell を一度閉じて再度開く。（管理者権限は不要、通常の起動でよい）
+
+** 5. インストールを確認する**
+
+PowerShell に以下を1行ずつ入力して Enter:
 
 ```powershell
-node --version    # v20.x.x など
-npm --version     # 10.x.x など
-git --version     # git version 2.x.x
+node --version
+npm --version
+git --version
 ```
 
-3つともバージョンが返ってきたら OK。
+それぞれ `v20.x.x`、`10.x.x`、`git version 2.x.x` のようにバージョン番号が返ってきたら OK。
 
-### 2.2 Claude Desktop インストール
-
-1. https://claude.com/download を開く
-2. Windows 版をダウンロード → 実行
-3. インストール後に起動 → サインイン
-4. 上部または左サイドのタブで **Code** が選択できることを確認
-
-### 2.3 GitHub Desktop インストール
-
-1. https://desktop.github.com/ を開く
-2. Windows 版をダウンロード → 実行
-3. 起動 → **Sign in to GitHub.com** で認証
+> ⚠️ 「認識されていません」と出た場合はトラブルシューティングを参照してください。
 
 ---
 
-## Part 3: MCP（Connectors）の接続（5分）
+### 2.2 Claude Desktop をインストールする
 
-GitHub・Vercel・Neon を Claude が操作できるようにします。専用の配布ファイル（`.mcpb`）は使わず、Claude Desktop 標準の **Connectors** 機能で OAuth ログインします。トークンを手で貼り付ける必要はありません。
+** 1. ダウンロードページを開く**
 
-> 💡 OAuth で接続するため、各サービスにすでに GitHub アカウントでサインイン済みの状態（Part 1 で済ませた状態）であれば、ほぼクリックだけで完了します。
+下記リンクを新しいタブで開いてください。
+
+https://claude.com/download
+
+** 2. Windows 版をダウンロードする**
+
+**「Download for Windows」** ボタンをクリックしてインストーラーをダウンロードする。
+
+** 3. インストーラーを実行する**
+
+ダウンロードしたファイル（`Claude-Setup-x64.exe` など）をダブルクリックして実行する。
+
+「このアプリがデバイスに変更を加えることを許可しますか？」と聞かれたら **「はい」** をクリック。インストールが自動で進み、完了すると Claude Desktop が起動する。
+
+** 4. サインインする**
+
+起動画面で **「Sign in」** をクリックし、Anthropic アカウント（または Google / Apple アカウント）でサインインする。
+
+** 5. Code タブを確認する**
+
+画面の上部または左サイドに **「Code」** タブが表示されていれば OK。
+
+---
+
+### 2.3 GitHub Desktop をインストールする
+
+** 1. ダウンロードページを開く**
+
+下記リンクを新しいタブで開いてください。
+
+https://desktop.github.com/
+
+** 2. Windows 版をダウンロードする**
+
+**「Download for Windows」** ボタンをクリックしてインストーラーをダウンロードする。
+
+** 3. インストーラーを実行する**
+
+ダウンロードしたファイルをダブルクリックして実行する。インストールが自動で進み、完了すると GitHub Desktop が起動する。
+
+** 4. GitHub アカウントでサインインする**
+
+起動後、**「Sign in to GitHub.com」** をクリックしてブラウザが開いたら **「Authorize desktop」** をクリックする。GitHub Desktop に戻り、自分のアカウント名が表示されれば完了。
+
+---
+
+## Part 3: MCP（Connectors）の接続（約5分）
+
+GitHub・Vercel・Neon を Claude が操作できるようにします。Claude Desktop 標準の **Connectors** 機能で OAuth ログインするだけで完了します。トークンを手で貼り付ける必要はありません。
+
+> 💡 Part 1 で各サービスにサインイン済みであれば、ほぼクリックだけで完了します。
+
+---
 
 ### 3.1 Connectors 画面を開く
 
-1. Claude Desktop を起動
-2. 左下のアイコン → **Settings**（または `Ctrl + ,`）
-3. 左メニューから **Connectors** を選択
+** 1. Claude Desktop を起動する**
 
-### 3.2 GitHub を接続
+デスクトップまたはスタートメニューから **Claude** を起動する。
 
-1. **Add connector** または検索欄に `GitHub` と入力
-2. **GitHub** を選択 → **Connect**
-3. ブラウザが開いて GitHub の認可画面が表示される
-4. **Authorize** をクリック → Claude Desktop に戻る
-5. Connectors 一覧に GitHub が「Connected」と表示されれば OK
+** 2. Settings を開く**
 
-### 3.3 Vercel を接続
+画面左下のアイコンをクリック → **「Settings」** を選ぶ（または `Ctrl + ,`）。
 
-1. Connectors 画面で **Add connector**
-2. 検索欄に `Vercel` と入力（見つからない場合は **Custom connector** で URL: `https://mcp.vercel.com` を入力）
-3. **Connect** → ブラウザで Vercel の認可画面 → **Authorize**
-4. 「Connected」と表示されれば OK
+** 3. Connectors を選択する**
 
-### 3.4 Neon を接続
-
-1. Connectors 画面で **Add connector**
-2. 検索欄に `Neon` と入力（見つからない場合は **Custom connector** で URL: `https://mcp.neon.tech/sse` を入力）
-3. **Connect** → ブラウザで Neon の認可画面 → **Authorize**
-4. 「Connected」と表示されれば OK
-
-> ⚠️ 各 Connector の名称・URL・追加 UI は Claude Desktop のバージョン更新で変わることがあります。
-> 案内役は事前に最新の手順を画面で確認してください。
-
-### 3.5 動作確認
-
-Claude Desktop の **Code タブ**で適当なフォルダ（後で消す `~/test` など）を開き、以下を試す:
-
-```
-あなた: 「私の GitHub のリポジトリ一覧を教えて」
-Claude: → GitHub Connector 経由で取得して返す
-
-あなた: 「Vercel の私のプロジェクト一覧を教えて」
-Claude: → Vercel Connector 経由で取得して返す
-
-あなた: 「Neon にある私の DB プロジェクト一覧を教えて」
-Claude: → Neon Connector 経由で取得して返す
-```
-
-3 つともリストが返ってきたら接続完了。
-エラーが出る場合は **Settings → Connectors** で対象 Connector を **Disconnect → 再 Connect**。
+左メニューから **「Connectors」** をクリックする。
 
 ---
 
-## Part 4: 最初のプロジェクトを作る（20分）
+### 3.2 GitHub を接続する
 
-### 4.1 テンプレートから派生
+** 1. Add connector をクリックする**
 
-1. ブラウザで https://github.com/soba-ai-driven/vibe-coding-template を開く
-2. 右上 **「Use this template」** → **「Create a new repository」**
-3. リポジトリ名: ハンズオンでは `my-first-mvp` とする
-4. **Owner**: 個人アカウント（または Organization、案内役が指示）
-5. **Private** を選択
-6. **「Create repository」**
+Connectors 画面で **「Add connector」** をクリックする。
 
-### 4.2 GitHub Desktop で clone
+** 2. GitHub を検索して選ぶ**
 
-1. 作ったリポジトリのページで **Code** → **Open with GitHub Desktop**
-2. **Local path** を `C:\Users\<ユーザー名>\Documents\GitHub\` に設定
-3. **「Clone」**
+検索欄に `GitHub` と入力し、表示された **「GitHub」** を選択 → **「Connect」** をクリックする。
 
-> ⚠️ パスは英数字のみのフォルダに。スペースや日本語が混じるとツールが誤動作することがあります。
+** 3. ブラウザの認可画面で承認する**
 
-### 4.3 Claude Desktop で開く
+ブラウザが開いて GitHub の認可画面が表示される。**「Authorize」** をクリックして Claude Desktop に戻る。
 
-1. Claude Desktop を起動
-2. 上部または左サイドの **Code** タブを選択
-3. **「Open folder」** または **「フォルダを開く」** → `C:\Users\<ユーザー名>\Documents\GitHub\my-first-mvp`
-4. Claude が自己紹介してくれる
+** 4. 接続を確認する**
 
-### 4.4 `/setup` 実行
+Connectors 一覧に GitHub が **「Connected」** と表示されれば OK。
+
+---
+
+### 3.3 Vercel を接続する
+
+** 1. Add connector をクリックする**
+
+Connectors 画面で **「Add connector」** をクリックする。
+
+** 2. Vercel を検索して選ぶ**
+
+検索欄に `Vercel` と入力し、表示された **「Vercel」** を選択 → **「Connect」** をクリックする。
+
+> ⚠️ 検索してもヒットしない場合は **「Custom connector」** を選び、URL 欄に `https://mcp.vercel.com` を入力してください。
+
+** 3. ブラウザの認可画面で承認する**
+
+ブラウザが開いて Vercel の認可画面が表示される。**「Authorize」** をクリックして Claude Desktop に戻る。
+
+** 4. 接続を確認する**
+
+Connectors 一覧に Vercel が **「Connected」** と表示されれば OK。
+
+---
+
+### 3.4 Neon を接続する
+
+** 1. Add connector をクリックする**
+
+Connectors 画面で **「Add connector」** をクリックする。
+
+** 2. Neon を検索して選ぶ**
+
+検索欄に `Neon` と入力し、表示された **「Neon」** を選択 → **「Connect」** をクリックする。
+
+> ⚠️ 検索してもヒットしない場合は **「Custom connector」** を選び、URL 欄に `https://mcp.neon.tech/sse` を入力してください。
+
+** 3. ブラウザの認可画面で承認する**
+
+ブラウザが開いて Neon の認可画面が表示される。**「Authorize」** をクリックして Claude Desktop に戻る。
+
+** 4. 接続を確認する**
+
+Connectors 一覧に Neon が **「Connected」** と表示されれば OK。
+
+> ⚠️ 各 Connector の名称・URL・追加 UI は Claude Desktop のバージョン更新で変わることがあります。案内役は事前に最新の手順を画面で確認してください。
+
+---
+
+### 3.5 動作確認
+
+** 1. Code タブでテスト用フォルダを開く**
+
+Claude Desktop の **「Code」** タブを選択し、適当なフォルダ（後で消す `~/test` など）を開く。
+
+** 2. 3つの接続を確認する**
+
+チャット欄に以下を順に入力し、それぞれリストが返ってくることを確認する:
 
 ```
-あなた: /setup を実行して
+私の GitHub のリポジトリ一覧を教えて
 ```
 
-Claude が以下を順に質問してくる:
-
 ```
-Q1. このMVPで解決したい課題は？
-   → 例: 「店舗の出退勤管理が紙で大変」
-
-Q2. 背景は？
-   → 例: 「複数店舗あって集計が手作業で月末が地獄」
-
-Q3. 想定ユーザーは？
-   → 例: 「店舗スタッフと本部の総務担当」
-
-Q4. 成功条件は？
-   → 例: 「月末集計が手作業ゼロになる」
-
-Q5. フロントエンドは？
-   → 例: A) Web画面
+Vercel の私のプロジェクト一覧を教えて
 ```
 
-回答後、Claude が自動で:
+```
+Neon にある私の DB プロジェクト一覧を教えて
+```
+
+3つともリストが返ってきたら接続完了。エラーが出る場合は **Settings → Connectors** で対象の Connector を **「Disconnect」→「Connect」** で再接続してください。
+
+---
+
+## Part 4: 最初のプロジェクトを作る（約20分）
+
+---
+
+### 4.1 テンプレートからリポジトリを作る
+
+** 1. テンプレートリポジトリを開く**
+
+下記リンクを新しいタブで開いてください。
+
+https://github.com/soba-ai-driven/vibe-coding-template
+
+** 2. 「Use this template」をクリックする**
+
+右上の緑色のボタン **「Use this template」** → **「Create a new repository」** をクリックする。
+
+** 3. リポジトリ情報を入力する**
+
+| 項目 | 入力値 |
+|---|---|
+| Owner | 自分のアカウント（案内役が指示）|
+| Repository name | `my-first-mvp` |
+| Visibility | **Private** |
+
+入力後、**「Create repository」** をクリックする。
+
+** 4. リポジトリが作成されたことを確認する**
+
+`github.com/<あなたのUsername>/my-first-mvp` のページが表示されれば完了。
+
+---
+
+### 4.2 GitHub Desktop でクローンする
+
+** 1. GitHub Desktop でリポジトリを開く**
+
+先ほどのリポジトリページで **「Code」** ボタン → **「Open with GitHub Desktop」** をクリックする。
+
+GitHub Desktop が起動して「Clone a repository」画面が表示される。
+
+** 2. 保存先を確認して Clone する**
+
+- **Local path** が `C:\Users\<ユーザー名>\Documents\GitHub\my-first-mvp` になっていることを確認する
+- 違う場合は **「Choose...」** から `Documents\GitHub\` フォルダを選ぶ
+- **「Clone」** をクリックする
+
+> ⚠️ パスに日本語やスペースが含まれると Claude のツールが誤動作することがあります。`Documents\GitHub\` 配下に英数字のみのフォルダ名で保存してください。
+
+---
+
+### 4.3 Claude Desktop でフォルダを開く
+
+** 1. Code タブを選択する**
+
+Claude Desktop を起動し、画面上部または左サイドの **「Code」** タブをクリックする。
+
+** 2. フォルダを開く**
+
+**「Open folder」**（または「フォルダを開く」）をクリックし、以下のフォルダを選択する:
+
+```
+C:\Users\<ユーザー名>\Documents\GitHub\my-first-mvp
+```
+
+** 3. Claude の挨拶を確認する**
+
+フォルダが開くと Claude が自己紹介のメッセージを送ってくる。表示されれば OK。
+
+---
+
+### 4.4 /setup を実行する
+
+** 1. チャットに入力する**
+
+チャット欄に以下を入力して **Enter** を押す:
+
+```
+/setup を実行して
+```
+
+** 2. Claude の質問に答える**
+
+Claude が順番に質問してくる。ハンズオンでは以下の例で回答してください:
+
+| 質問 | 回答例 |
+|---|---|
+| このMVPで解決したい課題は？ | 店舗の出退勤管理が紙で大変 |
+| 背景は？ | 複数店舗あって集計が手作業で月末が地獄 |
+| 想定ユーザーは？ | 店舗スタッフと本部の総務担当 |
+| 成功条件は？ | 月末集計が手作業ゼロになる |
+| フロントエンドは？ | Web画面 |
+
+** 3. Claude の自動処理が完了するのを待つ**
+
+回答後、Claude が以下を自動で実行する（数分かかります）:
 
 1. ✅ Vercel project 作成
 2. ✅ Neon DB project + 3 ブランチ作成
@@ -325,28 +499,47 @@ Q5. フロントエンドは？
 5. ✅ 初回コミット & ステージング push
 6. ✅ ステージング URL 表示
 
-### 4.5 ステージング URL を開く
+---
 
-Claude が表示した URL（例: `https://my-first-mvp-staging-xxx.vercel.app`）をブラウザで開く。
+### 4.5 ステージング URL を確認する
 
-「🎉 セットアップ完了」のページが見えたら成功。
+** 1. URL をブラウザで開く**
+
+Claude が表示した URL（例: `https://my-first-mvp-staging-xxx.vercel.app`）をクリックまたはコピーしてブラウザで開く。
+
+** 2. セットアップ完了を確認する**
+
+「セットアップ完了」のページが表示されれば成功です。
 
 ---
 
-## Part 5: 最初の機能を作ってみる（5分）
+## Part 5: 最初の機能を作ってみる（約5分）
+
+---
+
+### 5.1 ログイン機能を依頼する
+
+** 1. チャットに入力する**
+
+チャット欄に以下を入力して **Enter** を押す:
 
 ```
-あなた: 「ログイン画面をつけて。Googleでログインできるように」
+ログイン画面をつけて。Googleでログインできるように
 ```
 
-Claude が:
+** 2. Claude の処理が完了するのを待つ**
+
+Claude が以下を自動で行う:
+
 - Auth.js を導入
 - Google OAuth クライアント作成手順を案内（Google Cloud Console）
 - 必要な環境変数を Vercel に設定
 - ログイン画面を実装
 - ステージングへ反映
 
-完了したらステージング URL でログインを確認。
+** 3. ステージング URL でログインを確認する**
+
+Claude が案内した URL を開き、Google ログインが動作することを確認する。
 
 ---
 
