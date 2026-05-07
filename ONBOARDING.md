@@ -393,8 +393,6 @@ GitHub・Vercel・Neon を Claude が操作できるようにします。Claude 
 
 ** 1. [コネクタを参照] をクリックする**
 
-コネクタ 画面で **「コネクタを参照」** をクリックする。
-
 ** 2. Vercel を検索し、＋をクリックする**
 
 ** 3. Vercelの「連携/連携させる」をクリックする**
@@ -412,97 +410,16 @@ GitHub・Vercel・Neon を Claude が操作できるようにします。Claude 
 
 ### 3.4 Neon を接続する
 
-> 💡 まず方法Aを試してください。「カスタムコネクタを追加」ボタンが押せない場合は方法Bに進んでください。
+** 1. Neonの「連携/連携させる」をクリックする**
 
----
+** 2. [Approve]をクリックする**
 
-#### 方法A: コネクタ画面から追加する
+** 3. [Authorize]をクリックする**
 
-** 1. コネクタを参照 をクリックする**
+** 4. [デスクトップアプリを開く]をクリックする**
 
-コネクタ 画面で **「コネクタを参照」** をクリックする。
+** 5. Neonが[設定]となっていればOK**
 
-** 2. Neon を検索し、＋をクリックする**
-
-検索欄に `Neon` と入力し、表示された **「Neon」** を選択して **「＋」** または **「Connect」** をクリックする。
-
-> ⚠️ 検索してヒットしない場合は **「カスタムコネクタを追加」** を選び、URL 欄に `https://mcp.neon.tech/sse` を入力してください。
-
-** 3. ブラウザの認可画面で承認する**
-
-ブラウザが開いて Neon の認可画面が表示される。**「Authorize」** をクリックして Claude Desktop に戻る。
-
-** 4. 接続を確認する**
-
-コネクタ 一覧に Neon が **「接続済み」** と表示されれば OK。
-
----
-
-#### 方法B: 設定ファイルに直接追加する（カスタムコネクタが使えない場合）
-
-** 1. Neon の API キーを取得する**
-
-下記リンクを新しいタブで開いてください。
-
-https://console.neon.tech/app/settings/api-keys
-
-**「Generate new API key」** をクリックし、名前（例: `claude-desktop`）を入力して **「Create」** をクリックする。
-
-表示された API キー（`napi_...` で始まる文字列）をメモ帳にコピーしておく。
-
-> ⚠️ この画面を閉じると API キーは二度と表示されません。必ずコピーしてから進んでください。
-
-** 2. Claude Desktop の設定ファイルを開く**
-
-Claude Desktop の画面左下のアイコン → **「設定」** → **「開発者」** → **「設定を編集」** をクリックする。
-
-メモ帳（または他のテキストエディタ）で `claude_desktop_config.json` が開く。
-
-> ⚠️ 「開発者」メニューが見当たらない場合は、エクスプローラーのアドレスバーに `%APPDATA%\Claude` と入力して Enter を押し、`claude_desktop_config.json` を右クリック → **「メモ帳で開く」** を選んでください。
-
-** 3. 設定ファイルを編集する**
-
-開いたファイルの内容を確認する。
-
-- **ファイルが空または `{}` だけの場合**: 内容をすべて以下で置き換える
-
-```json
-{
-  "mcpServers": {
-    "neon": {
-      "command": "npx",
-      "args": ["-y", "@neondatabase/mcp-server-neon", "start"],
-      "env": {
-        "NEON_API_KEY": "ここに手順1でコピーしたAPIキーを貼り付ける"
-      }
-    }
-  }
-}
-```
-
-- **すでに `"mcpServers"` が存在する場合**: その中に以下を追加する（既存の項目の後にカンマで区切って追加）
-
-```json
-"neon": {
-  "command": "npx",
-  "args": ["-y", "@neondatabase/mcp-server-neon", "start"],
-  "env": {
-    "NEON_API_KEY": "ここに手順1でコピーしたAPIキーを貼り付ける"
-  }
-}
-```
-
-編集が終わったら **「ファイル」→「上書き保存」**（または `Ctrl + S`）。
-
-** 4. Claude Desktop を再起動する**
-
-Claude Desktop を一度完全に終了して（タスクバーのアイコンを右クリック → 「終了」）、再度起動する。
-
-** 5. 接続を確認する**
-
-コネクタ 画面に Neon が表示されるか、または 3.5 の動作確認で「Neon にある私の DB プロジェクト一覧を教えて」に回答が返ってくれば OK。
-
-> ⚠️ 各コネクタの名称・URL・追加 UI は Claude Desktop のバージョン更新で変わることがあります。案内役は事前に最新の手順を画面で確認してください。
 
 ---
 
@@ -702,20 +619,12 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 - インストール後に PowerShell を再起動していない → PowerShell を**一度閉じて開き直す**
 - それでもダメなら PC を再起動して PATH を反映
 
-### コネクタ 画面に Neon が見当たらない・カスタムコネクタを追加ボタンが押せない
+### コネクタ 画面に GitHub / Vercel / Neon が見当たらない
 
-Neon は Claude Desktop のビルトインコネクタ一覧に含まれていない場合があります。また「カスタムコネクタを追加」ボタンは Claude Desktop のプランによって制限されることがあります。
-
-→ **3.4 の方法B**（設定ファイルへの直接追記）で対応してください。
-
-### コネクタ 画面に Vercel が見当たらない
-
-- 検索欄でヒットしない場合は **「カスタムコネクタを追加」** を選び URL: `https://mcp.vercel.com` を入力
-- カスタムコネクタボタンが押せない場合 → Claude Desktop のプラン制限の可能性。案内役に相談する
-
-### コネクタ 画面に GitHub が見当たらない
-
-- 検索欄で `GitHub` を入力してもヒットしない場合は **「カスタムコネクタを追加」** で URL: `https://api.githubcopilot.com/mcp/` を入力
+- 検索欄でヒットしない場合は **Custom connector** から URL を直接入力
+  - Vercel: `https://mcp.vercel.com`
+  - Neon: `https://mcp.neon.tech/sse`
+  - GitHub: 公式 Connector が見当たらない場合のみ Custom で `https://api.githubcopilot.com/mcp/`
 - Claude Desktop が古い可能性 → 最新版に更新して再起動
 
 ### OAuth 認可画面でエラーが出る
