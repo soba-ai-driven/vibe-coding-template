@@ -230,7 +230,7 @@ https://nodejs.org/en/download
 
 https://git-scm.com/download/win
 
-**「64-bit Git for Windows Setup」** をクリックしてダウンロードする。
+**「Git for Windows/x64 Setup」** をクリックしてダウンロードする。
 
 ** 4. Git for Windows をインストールする**
 
@@ -257,7 +257,15 @@ git --version
 
 それぞれ `v20.x.x`、`10.x.x`、`git version 2.x.x` のようにバージョン番号が返ってきたら OK。
 
-> ⚠️ 「認識されていません」と出た場合は再起動が必要か、インストールが完了していない可能性があります。トラブルシューティングを参照してください。
+> ⚠️ `npm --version` で「スクリプトの実行が無効になっているため…」と赤いエラーが出た場合は、以下のコマンドを実行してから再度確認してください:
+>
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+>
+> 「実行ポリシーを変更しますか？」と聞かれたら `Y` を入力して **Enter**。その後 `npm --version` を再度実行する。
+
+> ⚠️ `node` や `git` が「認識されていません」と出た場合は PC を再起動して再度確認してください。
 
 ---
 
@@ -596,6 +604,16 @@ Claude が案内した URL を開き、Google ログインが動作すること�
 - 管理者権限で PowerShell を開いていない → 「PowerShell」を右クリック → **管理者として実行**
 - `winget` コマンドが認識されない → Windows 10/11 が古い場合あり。Windows Update で最新化
 - 社内 Antivirus が `winget` をブロック → IT 部門に Node.js / Git for Windows のインストール許可を依頼
+
+### `npm --version` で「スクリプトの実行が無効」エラーが出る
+
+Windows の PowerShell はデフォルトで外部スクリプトの実行を禁止しており、npm は `.ps1` スクリプトのため弾かれます。以下で解除してください:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+「実行ポリシーを変更しますか？」と聞かれたら `Y` を入力して **Enter**。その後 `npm --version` を再度実行する。
 
 ### `node --version` / `git --version` が認識されない
 
