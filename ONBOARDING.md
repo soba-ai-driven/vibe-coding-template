@@ -36,79 +36,32 @@ GitHub は、作ったプログラムを保存・管理する場所です。ま�
 
 #### 手順
 
-**① ブラウザ（Edge または Chrome）を開く**
+** 1. サインアップページを開く**
 
-Chrome を起動してください。
-
-**② サインアップページを開く**
+下記リンクを新しいタブで開いてください。
 
 https://github.com/signup
 
+** 2. メールアドレスを選択(入力)する**
 
-**③ メールアドレスを入力する**
+「Continue with Google」をクリックする
 
-「Enter your email」と書かれた欄に、**普段使っているメールアドレス**を入力して **「Continue」** を押す。
+**普段使っているメールアドレス**を入力して **「Continue」** を押す。
 
-> ⚠️ 会社のメールでも可ですが、退職後も使える個人メールを推奨します。
+> ⚠️ 「Enter your email」と書かれた欄にメールアドレスを入力でも可ですが、ここではsoba-project.com のGoogle workspace を前提とします。
 
-**④ パスワードを設定する**
+** 3. Username 等を入力し[Create acccont]をクリック**
 
-「Create a password」欄に**新しいパスワード**を入力して **「Continue」** を押す。
+> Username: 自分の名前に近い**英数字とハイフンだけ**の名前を入力
+> Your Country/Region: Japan
 
-パスワードのルール（画面に表示されます）:
-- 8文字以上
-- 数字と小文字アルファベットを両方含む
-
-> 💡 パスワードはメモ帳や手帳に控えておきましょう。
-
-**⑤ ユーザー名（Username）を決める**
-
-「Enter a username」欄に、自分の名前に近い**英数字とハイフンだけ**の名前を入力して **「Continue」** を押す。
-
-良い例:
-- `tanaka-ichiro`
-- `yamada-hanako`
-- `sato-taro`
-
-NG:
-- 日本語（`田中一郎`）→ 使えません
-- スペース（`tanaka ichiro`）→ 使えません
-
-> ⚠️ Username は後から変更しにくいので、慎重に決めてください。
-
-**⑥ メールの受け取り設定**
-
-「Would you like to receive product updates...?」と表示されたら **`n`** と入力して **「Continue」** を押す（受け取らない設定。どちらでも構いません）。
-
-**⑦ 人間確認（パズル）を解く**
-
-「Verify your account」画面でパズルが表示されます。
-
-- 「Start puzzle」または「Verify」ボタンを押す
-- 表示される画像の指示に従って操作する（例: 「〇〇の画像をクリックしてください」）
-- 緑のチェックが付いたら **「Create account」** を押す
-
-**⑧ メールに届いた確認コードを入力する**
-
-しばらくすると、登録したメールアドレスに **GitHub から6桁の数字コード**が届きます。
-
-1. メールアプリ（または Gmail など）を開く
-2. `GitHub` からのメールを探す（件名: 「Your GitHub launch code」または「Verify your email address」）
-3. メール本文に書かれた**6桁の数字**をブラウザの確認欄に入力する
-
-> ⚠️ メールが届かない場合: 迷惑メールフォルダも確認してください。5分待っても届かなければ「Resend code」を押す。
-
-**⑨ アンケート画面をスキップする**
-
-「How many team members...」などのアンケートが表示されたら、画面下部の **「Skip personalization」** または **「Continue」** を押してスキップして構いません。
-
-**⑩ 案内役に GitHub ユーザー名を伝える**
+** 4. 案内役に GitHub ユーザー名を伝える**
 
 ここまで完了したら、案内役（エンジニア）に自分の **GitHub ユーザー名（Username）** を伝えてください。
 
 > 🚦 **案内役の作業**: https://github.com/orgs/soba-ai-driven/people から受講者を招待する。
 
-**⑪ GitHub Organization への招待メールを承認する**
+** 5. GitHub Organization への招待メールを承認する**
 
 しばらくすると「You've been invited to join soba-ai-driven」という件名のメールが届きます。
 
@@ -126,11 +79,9 @@ Vercel は、作ったアプリをインターネット上に公開するため�
 
 **① Vercel のサインアップページを開く**
 
-アドレスバーに以下を入力して **Enter**:
+下記リンクを新しいタブで開いてください。
 
-```
 https://vercel.com/signup
-```
 
 **② 「Continue with GitHub」を選ぶ**
 
@@ -172,11 +123,9 @@ Neon は、アプリのデータ（例: ユーザー情報や記録）を保存�
 
 **① Neon のサインアップページを開く**
 
-アドレスバーに以下を入力して **Enter**:
+下記リンクを新しいタブで開いてください。
 
-```
 https://console.neon.tech/signup
-```
 
 **② 「Continue with GitHub」を選ぶ**
 
