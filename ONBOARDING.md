@@ -286,6 +286,11 @@ winget install Git.Git --silent --accept-source-agreements --accept-package-agre
 
 ### 2.2 Claude Desktop をインストールする
 
+
+
+※作業前にSOBAのClaude Code Teamへの招待状から soba-project のGoogleアカウントでサインアップしておく
+
+
 ** 1. ダウンロードページを開く**
 
 下記リンクを新しいタブで開いてください。
@@ -304,11 +309,15 @@ https://claude.com/download
 
 ** 4. サインインする**
 
-起動画面で **「Sign in」** をクリックし、Anthropic アカウント（または Google / Apple アカウント）でサインインする。
+起動画面「はじめる」をクリックする
+
+サインインで **「Googleで続ける」** をクリックする
+
+
 
 ** 5. Code タブを確認する**
 
-画面の上部または左サイドに **「Code」** タブが表示されていれば OK。
+画面の上部または左サイドに **「</> Code」** タブが表示されていれば OK。
 
 ---
 
@@ -322,7 +331,7 @@ https://desktop.github.com/
 
 ** 2. Windows 版をダウンロードする**
 
-**「Download for Windows」** ボタンをクリックしてインストーラーをダウンロードする。
+**「Download now」** ボタンをクリック、**「Download for Windows (64bit)」** ボタンをクリックしてインストーラーをダウンロードする。
 
 ** 3. インストーラーを実行する**
 
@@ -330,7 +339,20 @@ https://desktop.github.com/
 
 ** 4. GitHub アカウントでサインインする**
 
-起動後、**「Sign in to GitHub.com」** をクリックしてブラウザが開いたら **「Authorize desktop」** をクリックする。GitHub Desktop に戻り、自分のアカウント名が表示されれば完了。
+起動後、**「Sign in to GitHub.com」** をクリックしてブラウザが開いたら **「Continue」** をクリック
+
+次に **「Authorize desktop」** をクリック
+
+** 「Verify vie email」 ** をクリック、
+
+しばらくするとメールアドレスに件名「[GitHub] Sudo email verification code」のメールが届くので、数字をコピーする
+
+Confirm access でコピーした数字を入力し [Verify]をクリック
+
+ダイアログが開くのでConfirmをクリック
+
+GitHub Desktop に戻り、「Finish」をクリック
+
 
 ---
 
