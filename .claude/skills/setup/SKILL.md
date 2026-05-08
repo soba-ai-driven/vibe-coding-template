@@ -15,7 +15,7 @@ Vercel/Neon プロジェクトを作成し、ステージング環境までを�
 - [ ] GitHub アカウントが作成済み、組織に招待済み
 - [ ] Vercel に GitHub サインイン済み、Team に参加済み
 - [ ] Neon に GitHub サインイン済み、Organization に参加済み
-- [ ] Claude Desktop の Settings → Connectors で Vercel / Neon が OAuth 接続済み（Code タブ用は `.mcp.json` 経由で自動接続）
+- [ ] Claude Desktop の Settings → Connectors で **Neon が OAuth 接続済み**（Vercel はコネクタを使わない方針なので不要）
 - [ ] `gh` コマンドが使える（`gh auth status` でログイン済みを確認）
 - [ ] Node.js + Git for Windows がローカルにインストール済み（`node -v` / `git -v` で確認可能）
 - [ ] このリポジトリが `~/Documents/GitHub/<repo-name>` に clone されている
@@ -28,7 +28,7 @@ Vercel/Neon プロジェクトを作成し、ステージング環境までを�
 `.env.local` が存在し `DATABASE_URL` が空でなければ「既にセットアップ済みです」と伝えて終了。
 強制再実行したい場合は明示的に `/setup --force` のような指示を求める（基本は推奨しない）。
 
-### ステップ2: 自己紹介と概要説明
+### ステップ2: 自己紹介と概要説明 + Vercel トークン取得
 
 ユーザーに以下を伝える:
 
@@ -36,13 +36,37 @@ Vercel/Neon プロジェクトを作成し、ステージング環境までを�
 こんにちは。これからこのプロジェクトの初期セットアップを行います。
 
 具体的には:
-  1. このプロジェクトの目的を聞きます
-  2. Vercel と Neon にプロジェクトを自動で作ります
-  3. 環境変数を自動で設定します
-  4. ステージング（お試し公開）の URL を立ち上げます
+  1. Vercel のアクセストークンを発行してもらいます（最初の1分だけ手作業）
+  2. このプロジェクトの目的を聞きます
+  3. Vercel と Neon にプロジェクトを自動で作ります
+  4. 環境変数を自動で設定します
+  5. ステージング（お試し公開）の URL を立ち上げます
 
 5〜10分程度かかります。途中いくつか質問させてください。
 ```
+
+続けて、Vercel トークンの取得手順を案内する:
+
+```
+最初に Vercel のアクセストークンを発行してください（1分で終わります）:
+
+1. ブラウザで https://vercel.com/account/tokens を開く
+2. 「Create Token」をクリック
+3. 以下を入力して「Create」:
+   - Token Name: claude-<このリポジトリ名>
+   - Scope: 該当チーム（例: SOBA AI Driven）を選択 ← 重要
+   - Expiration: お好み（No Expiration でも 1 year でも OK）
+4. 表示された vercel_xxx... の文字列をコピーしてこのチャットに貼り付け
+   ⚠️ 1回しか表示されないので必ず即コピー
+```
+
+ユーザーがトークンを貼り付けたら、即座に `.env.local` に保存:
+
+```
+VERCEL_TOKEN=<受け取った値>
+```
+
+> `.env.local` は `.gitignore` 済みなので公開リポジトリには上がらない（必ず `git check-ignore .env.local` で確認）。
 
 ### ステップ3: コンテキスト初期化（対話）
 
@@ -120,13 +144,21 @@ git checkout -
 
 ### ステップ5: Vercel プロジェクト作成
 
-Vercel MCP で:
+Vercel CLI（または REST API）で実行:
 
-1. プロジェクト作成（名前 = リポジトリ名）
-2. GitHub リポジトリと連携
-3. プロダクションブランチ = `main`
-4. プレビューブランチに `staging` を含める設定
-5. 既存 Team（`SOBA Project Team` 等）配下に作成
+1. `set -a; source .env.local; set +a` で `VERCEL_TOKEN` を読み込む
+2. チーム ID を取得（curl で `GET /v2/teams` を叩く）
+3. プロジェクト作成（名前 = リポジトリ名、teamId を指定）
+   ```bash
+   curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" \
+     -H "Content-Type: application/json" \
+     "https://api.vercel.com/v9/projects?teamId=team_xxx" \
+     -d '{"name":"<repo-name>","framework":"nextjs","gitRepository":{"type":"github","repo":"<owner>/<repo>"}}'
+   ```
+4. プロダクションブランチ = `main`、`staging` を Preview 対象として扱う（Vercel のデフォルトでも全ブランチが Preview にデプロイされる）
+5. プロジェクトの Vercel ダッシュボード URL を控えてユーザーに見せる
+
+**Vercel コネクタ（MCP）は使わない。** 詳細は `CLAUDE.md` の「6.1 Vercel: Personal Access Token + CLI/API 方式」参照。
 
 ### ステップ6: Neon プロジェクト作成
 
@@ -138,7 +170,7 @@ Neon MCP で:
 
 ### ステップ7: 環境変数を Vercel に設定
 
-Vercel MCP で:
+Vercel CLI または REST API で各環境ごとに設定:
 
 | 環境 | DATABASE_URL | AUTH_SECRET | AUTH_URL |
 |---|---|---|---|
@@ -146,13 +178,33 @@ Vercel MCP で:
 | Preview | Neon staging branch URL | 同上 | プレビューURL |
 | Development | （ローカル用、Vercel側は未設定でOK） | — | — |
 
-### ステップ8: `.env.local` を作成
+REST API での設定例:
 
-ローカル開発用に以下を生成:
+```bash
+curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" \
+  -H "Content-Type: application/json" \
+  "https://api.vercel.com/v10/projects/<project-id>/env?teamId=team_xxx" \
+  -d '{"key":"DATABASE_URL","value":"<connection-string>","type":"encrypted","target":["production"]}'
+```
+
+> 同じ KEY を `production` / `preview` 両方に登録するには別 API call で発行する。
+
+### ステップ8: `.env.local` を更新
+
+ステップ2で先に `VERCEL_TOKEN` を保存済みなので、以下を追記:
 
 ```
 DATABASE_URL=<Neon development branch の接続文字列>
 AUTH_SECRET=<新規生成>
+AUTH_URL=http://localhost:3000
+```
+
+最終的な `.env.local` は以下のような内容になる:
+
+```
+VERCEL_TOKEN=vcp_xxx...
+DATABASE_URL=postgresql://...neon.tech/...
+AUTH_SECRET=base64-encoded-string
 AUTH_URL=http://localhost:3000
 ```
 
@@ -166,7 +218,7 @@ npm install
 
 ### ステップ10: フロントエンド種別ごとの追加処理
 
-Q5 の回答に応じて分岐。CLAUDE.md の「6. パターン集」を参照して必要な依存を追加し、最小限のスキャフォールドを作る:
+Q5 の回答に応じて分岐。CLAUDE.md の「7. パターン集」を参照して必要な依存を追加し、最小限のスキャフォールドを作る:
 
 - A (Web): 何もしない（デフォルトの `src/app/page.tsx` のまま）
 - B (LINE): `npm install @line/bot-sdk` & `src/app/api/line/webhook/route.ts` の雛形作成
@@ -198,8 +250,16 @@ git push origin staging
 
 ### ステップ13: デプロイ完了を待つ
 
-Vercel MCP でデプロイステータスを polling（最大5分）。
-完了したらステージングURLを取得。
+Vercel REST API でデプロイステータスを polling（最大5分）:
+
+```bash
+# 最新デプロイのステータスを取得
+curl -H "Authorization: Bearer $VERCEL_TOKEN" \
+  "https://api.vercel.com/v6/deployments?projectId=<project-id>&teamId=team_xxx&limit=1"
+# .deployments[0].state が "READY" になるまで待つ
+```
+
+完了したら `.deployments[0].url` をステージング URL として取得。
 
 ### ステップ14: 意思決定ログを書く
 
@@ -246,7 +306,8 @@ Next.js 15 (App Router) + TypeScript + Drizzle ORM + Auth.js v5 + Tailwind v4 + 
 ## 注意事項
 
 - このスキルは**初回1回のみ**実行する想定。2回目以降は何もしない
-- すべての MCP 呼び出しでエラーハンドリング。失敗したらユーザーに見せて指示を仰ぐ
-- API トークン関連のエラー（権限不足等）は、ユーザーに「権限が足りません。エンジニアに連絡してください」と伝える
+- Vercel API/CLI 呼び出しと Neon MCP 呼び出しはどちらも失敗ハンドリング必須。失敗したらユーザーに見せて指示を仰ぐ
+- Vercel トークン関連のエラー（401 / 403）が出たら、ユーザーに `https://vercel.com/account/tokens` でトークン再発行を依頼し、新しいトークンを `.env.local` の `VERCEL_TOKEN` に上書き
+- Neon の権限不足等は、ユーザーに「Neon コネクタの認証が切れているかもしれません」と Settings → コネクタの確認を依頼
 - ユーザーの回答が短すぎる/曖昧な場合、もう少し具体的に聞き返す（特に Q1〜Q4）
 - ステップ間でユーザーに「進めていいですか？」と確認は**しない**（裁量で進める）。ただし重大なエラー時は止まる

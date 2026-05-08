@@ -1,9 +1,5 @@
 {
   "mcpServers": {
-    "vercel": {
-      "type": "http",
-      "url": "https://mcp.vercel.com"
-    },
     "neon": {
       "type": "http",
       "url": "https://mcp.neon.tech/mcp"
