@@ -39,26 +39,52 @@ https://github.com/soba-ai-driven/vibe-coding-template
 
 2. 右上の緑色のボタン **「Use this template」** → **「Create a new repository」**
 
-3. リポジトリ名を入力（例: `kaidan-mvp`）
+3. Owner に soba-ai-driven を選択
 
-4. Choose visibility で **Private** を選択
+4. リポジトリ名を入力（例: `kaidan-mvp`）
 
-5. **Create repository** をクリック
+5. Choose visibility で **Private** を選択
+
+6. **Create repository** をクリック
 
 
 ### Step 3. パソコンに持ってくる（clone）
 
-1. 作ったばかりのリポジトリのページで **「Code」** ボタン → **「Open with GitHub Desktop」**
-2. GitHub Desktop が開くので、**Local path** を `C:\Users\<あなたの名前>\Documents\GitHub\` にする
-3. **「Clone」** をクリック
+1. GitHubオーガニゼーションのリポジトリ一覧を開く
+
+https://github.com/orgs/soba-ai-driven/repositories
+
+
+2. 作ったばかりのリポジトリを探して開く
+
+上記例では、URLはこうなる
+https://github.com/soba-ai-driven/kaidan-mvp
+
+3. **「Code」** ボタン → **「Open with GitHub Desktop」**
+
+3. GitHub Desktop が開くので、**Local path** を確認 `C:\Users\<あなたの名前>\Documents\GitHub\kaidan-mvp` しメモする
+
+4. **「Clone」** をクリック
 
 ### Step 4. Claude Desktop で開く
 
-1. Claude Desktop を起動
-2. 上部または左サイドの **「Code」** タブに切り替え
+1. Claude Desktop を起動する
+
+2. 左サイド上部の **「</> Code」** タブに切り替え
+
+3. [+New session]をクリック
+
 3. **「Open folder」** → さっき clone したフォルダを選ぶ
+
+
+@@@ 今ここまで@@@
+
 4. MCP サーバーの承認を求めるプロンプトが表示されたら**許可**する
+-> 出ない
+
 5. チャット欄に `/mcp` と入力して Enter → Vercel・Neon が表示されたら画面の指示に従いブラウザで OAuth 認証する
+-> 入力できない
+
 6. Claude が自己紹介してくれる
 
 ### Step 5. セットアップを実行

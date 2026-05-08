@@ -66,8 +66,12 @@ https://github.com/signup
 しばらくすると「You've been invited to join soba-ai-driven」という件名のメールが届きます。
 
 1. メールを開く
+
 2. **「Join soba-ai-driven」** ボタンをクリック
+
 3. ブラウザで GitHub のページが開き、「Welcome to soba-ai-driven!」と表示されれば完了
+
+4. 忘れない様に、GitHubのURLとアカウント情報をメモしておきましょう
 
 ---
 
@@ -94,26 +98,26 @@ https://vercel.com/signup
 
 > 自分の名前に近い**英数字とハイフンだけ**の名前を入力
 
+
 ** 4. 「Continue with GitHub」を選ぶ**
 
 画面に複数のサインイン方法が表示されます。**「Continue with GitHub」** と書かれたボタンをクリックする。
 
 ** 5. GitHub の認可画面で承認する**
 
-「Authorize Vercel」というタイトルのページが開きます。 **「Continue」** ボタン（緑色）をクリックする。
+「Vercel by Vercel」というタイトルのページが開きます。 **「Authorize」** ボタン（緑色）をクリックする。
 
 > ⚠️ このページが開かない場合: ブラウザで GitHub にサインインできているか確認してください。
 
 
-** 6. 初期設定の質問に答える**
+** 6. Let's build something new のページが表示されたら、[<-back] をクリック**
 
-「What's your name?」や「What will you be using Vercel for?」などの質問画面が表示されたら、回答して **「Continue」** を押す（内容はなんでも構いません）。
 
-Vercel のダッシュボード（プロジェクト一覧画面）が表示されれば登録完了です。
+** 7. Vercel のダッシュボード（プロジェクト一覧画面）が表示されれば登録完了です。**
 
-** 7. 案内役に完了を伝える**
+** 8. 案内役に完了を伝える**
 
-Vercel の登録が完了したことを案内役に伝えてください。
+メールアドレスを添えて、Vercel の登録が完了したことを案内役に伝えてください。
 
 > 🚦 **案内役の作業**: 下記リンクから受講者を招待する。
 >
@@ -123,8 +127,14 @@ Vercel の登録が完了したことを案内役に伝えてください。
 しばらくすると「*** invited you to the SOBA AI Driven team on Vercel」という件名のメールが届きます。
 
 1. メールを開く
+
 2. **「Join the team」** ボタンをクリック
-3. Vercel の画面で `soba-ai-driven` のダッシュボードに切り替わったら完了
+
+3. **「Continue as メールアドレス」** ボタンをクリック
+
+4. Vercel の画面で `SOBA AI Driven` のダッシュボードに切り替わったら完了
+
+5. 忘れない様に、VercelのURLとアカウント情報をメモしておきましょう
 
 ---
 
@@ -140,42 +150,34 @@ Neon は、アプリのデータ（例: ユーザー情報や記録）を保存�
 
 https://console.neon.tech/signup
 
-** 2. 「Continue to Neon with」で 「GitHub」をクリック**
+** 2. 「Create your free account」で 「GitHub」をクリック**
 
-
-** 3. GitHub の認可画面で承認する**
-
-「Authorize Neon Console」というタイトルのページが開きます。**「Authorize neondatabase」** ボタン（緑色）をクリックする。
-
+** 3. 「Authorize Neon Console」というタイトルのページが開きます。**「Authorize neondatabase」** ボタン（緑色）をクリックする。**
 
 ** 4. Welcome to Neon で以下を入力し[Next]をクリック**
 
 > Organization name: 変更なしでOK
 > What's this organnization for?: 変更なし(Personal projects)でOK
 
-
 ** 5. Now, let's create your first project. が表示されることを確認する**
-
-表示されれば登録完了です。
 
 > ⚠️ 「Create project」というボタンが表示されても、**ここでは何も作らないでください**。
 
 
 ** 6. 案内役に完了を伝える**
 
-Neon の登録が完了したことを案内役に伝えてください。
+メールアドレスを添えて、Neon の登録が完了したことを案内役に伝えてください。
 
 > 🚦 **案内役の作業**: 下記リンクから受講者を招待する。
 >
 > https://console.neon.tech/app/org-empty-waterfall-10829916/people
 
-** 6. Neon Organization への招待メールを承認する**
+** 6. 「xxxx has  invited you to join SOBA AI Driven」という件名のメールが届くので、「Go to SOBA AI Driven」をクリックする**
 
-「xxxx has  invited you to join SOBA AI Driven」という件名のメールが届きます。
 
-1. メールを開く
-2. **「Go to SOBA AI Driven」** ボタンをクリック
-3. Neon の画面左上の組織名が「SOBA AI Driven」に切り替わったら完了
+** 7. Neon の画面左上の組織名が「SOBA AI Driven」に切り替わったら完了
+
+https://console.neon.tech/app/org-empty-waterfall-10829916/projects
 
 ---
 
