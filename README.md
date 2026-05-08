@@ -79,11 +79,10 @@ https://github.com/soba-ai-driven/kaidan-mvp
 
 @@@ 今ここまで@@@
 
-4. MCP サーバーの承認を求めるプロンプトが表示されたら**許可**する
--> 出ない
+4. MCP サーバー（Neon）の承認を求めるプロンプトが表示されたら**許可**する
 
-5. チャット欄に `/mcp` と入力して Enter → Vercel・Neon が表示されたら画面の指示に従いブラウザで OAuth 認証する
--> 入力できない
+5. チャット欄に `/mcp` と入力して Enter → Neon が表示されたら画面の指示に従いブラウザで OAuth 認証する
+   （Vercel は `/setup` 実行時に Personal Access Token を発行する方式に変更したので、`/mcp` には出ません）
 
 6. Claude が自己紹介してくれる
 

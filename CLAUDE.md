@@ -120,14 +120,47 @@ npm run format            # Prettier
 
 ---
 
-## 6. パターン集（スキル化していない実装パターン）
+## 6. Vercel / Neon の操作方針
+
+### 6.1 Vercel: Personal Access Token + CLI/API 方式
+
+**Vercel コネクタ（MCP）は使わない。** `.env.local` の `VERCEL_TOKEN` を使って Vercel CLI または REST API で操作する。
+
+```bash
+# CLI 経由（推奨）
+vercel projects ls --token "$VERCEL_TOKEN"
+vercel env add KEY production --token "$VERCEL_TOKEN"
+vercel deploy --prod --token "$VERCEL_TOKEN"
+
+# CLI が無い環境では curl で直接 API を叩く
+set -a; source .env.local; set +a
+curl -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/projects?teamId=team_xxx"
+```
+
+**理由**: Claude Desktop の Vercel コネクタは OAuth スコープ選択 UI が分かりづらく、非エンジニアには認証で詰まりやすい。CLI+トークン方式なら `.env.local` だけ気にすれば良く、認証画面のスコープミスで「チームのプロジェクトが見えない」事故が起きない。詳細は `ai/doc/03-decisions.md` の関連 ADR 参照。
+
+**トークンが無い・期限切れの場合**: ユーザーに https://vercel.com/account/tokens でトークンを再発行してもらい、`.env.local` の `VERCEL_TOKEN` を更新する。
+
+### 6.2 Neon: MCP コネクタ方式（継続）
+
+**Neon は MCP コネクタ（`.mcp.json` 経由）を使う。** `run_sql`、`prepare_database_migration`、`list_projects` 等の便利ツールが揃っている。OAuth 認証 UI も Vercel と違って組織スコープが最初から見える挙動なので、非エンジニアでも詰まりにくい。
+
+ローカル開発の `npm run db:migrate` は `.env.local` の `DATABASE_URL`（Neon development branch）を使う。MCP は主に組織・プロジェクト・ブランチの管理操作（作成・削除・接続文字列取得など）に使う。
+
+---
+
+## 7. パターン集（スキル化していない実装パターン）
 
 非エンジニアの依頼に応じて、以下のパターンを参照しながら実装してください。
 
-### 6.1 認証を追加する（Auth.js v5）
+### 7.1 認証を追加する（Auth.js v5）
 
 1. ユーザーに「Google でログイン or GitHub でログイン or どちらも」を聞く
-2. 必要な OAuth クライアントを Vercel MCP 経由で環境変数追加
+2. 必要な OAuth クライアントの認証情報を `.env.local` に追加し、Vercel CLI で各環境にも反映:
+   ```bash
+   vercel env add AUTH_GOOGLE_ID production --token "$VERCEL_TOKEN"
+   vercel env add AUTH_GOOGLE_SECRET production --token "$VERCEL_TOKEN"
+   ```
 3. `src/auth.ts` に Auth.js v5 設定（`@auth/drizzle-adapter` 使用）
 4. `src/db/schema.ts` に Auth.js のテーブルを追加 → `npm run db:generate` & `db:migrate`
 5. `src/middleware.ts` で保護ルートを定義
@@ -136,17 +169,17 @@ npm run format            # Prettier
 8. Vitest でセッション取得テスト、Playwright で OAuth E2E（モックは MSW で）
 9. `ai/doc/03-decisions.md` に「認証を Auth.js v5 + <provider> で実装した」を ADR で残す
 
-### 6.2 DB テーブルを追加する（Drizzle）
+### 7.2 DB テーブルを追加する（Drizzle）
 
 1. `src/db/schema.ts` にテーブル定義を追記
 2. `npm run db:generate` でマイグレーション SQL 生成
 3. `drizzle/<NNNN>_*.sql` を git に含める
 4. `npm run db:migrate` で development branch に適用
-5. ステージング/本番は Vercel デプロイ時に Vercel MCP 経由で実行
+5. ステージング/本番は Vercel デプロイ時に自動実行されるよう、`package.json` の `build` スクリプトに `npm run db:migrate &&` を含める（既にテンプレートに設定済み）
 6. クエリは必ず Drizzle 経由（生 SQL 禁止）
 7. `ai/doc/04-architecture.md` のスキーマ図を更新
 
-### 6.3 機能を追加する（CRUD例）
+### 7.3 機能を追加する（CRUD例）
 
 1. ユーザーに受け入れ条件を確認
 2. `ai/doc/02-requirements.md` に要件を記載
@@ -159,7 +192,7 @@ npm run format            # Prettier
 9. コミット → `git push origin staging`
 10. ステージングで動作確認 → ユーザーに URL 共有
 
-### 6.4 LINE Messaging API フロントを追加
+### 7.4 LINE Messaging API フロントを追加
 
 1. `npm install @line/bot-sdk`
 2. ユーザーに LINE Developers コンソールで Channel を作るよう案内
@@ -167,10 +200,14 @@ npm run format            # Prettier
 4. `src/app/api/line/webhook/route.ts` に webhook ハンドラ実装
 5. 署名検証ロジック必須
 6. Vercel staging URL を取得し、ユーザーに「LINE Developers で Webhook URL を `<staging-url>/api/line/webhook` に設定してください」と案内
-7. Vercel MCP で本番環境変数も設定
+7. 本番環境変数を Vercel CLI で設定:
+   ```bash
+   vercel env add LINE_CHANNEL_SECRET production --token "$VERCEL_TOKEN"
+   vercel env add LINE_CHANNEL_ACCESS_TOKEN production --token "$VERCEL_TOKEN"
+   ```
 8. `ai/doc/04-architecture.md` に LINE 連携の図を追記
 
-### 6.5 Discord ボットフロントを追加
+### 7.5 Discord ボットフロントを追加
 
 1. `npm install discord.js` または webhook 形式なら不要
 2. ユーザーに Discord Developer Portal でアプリ作成を案内
@@ -179,7 +216,7 @@ npm run format            # Prettier
 5. Bot 常駐の場合: Vercel ではなく外部ホスティング検討（ユーザーに相談）
 6. `ai/doc/04-architecture.md` を更新
 
-### 6.6 Slack Bot フロントを追加
+### 7.6 Slack Bot フロントを追加
 
 1. `npm install @slack/bolt`
 2. ユーザーに Slack API 管理画面でアプリ作成を案内
@@ -189,7 +226,7 @@ npm run format            # Prettier
 6. Vercel staging URL を Slack の Event Subscriptions に設定するよう案内
 7. `ai/doc/04-architecture.md` を更新
 
-### 6.7 Chatwork フロントを追加
+### 7.7 Chatwork フロントを追加
 
 1. ChatWork API は polling か webhook（v3 から webhook あり）
 2. webhook 形式: `src/app/api/chatwork/webhook/route.ts` で署名検証
@@ -199,7 +236,7 @@ npm run format            # Prettier
 
 ---
 
-## 7. 自分自身の品質を保つ
+## 8. 自分自身の品質を保つ
 
 - **作業前後で `ai/doc/` の更新を欠かさない**
 - 動作確認していないコードは「動いた」と言わない
@@ -209,7 +246,7 @@ npm run format            # Prettier
 
 ---
 
-## 8. ユーザーへの応答スタイル
+## 9. ユーザーへの応答スタイル
 
 - 専門用語が必要な場合は1回だけ簡単に説明（例: 「ステージングというのはお試し公開用のURLです」）
 - ユーザーが「動いた？」「いつできる？」と聞きやすい雰囲気を作る
@@ -218,7 +255,7 @@ npm run format            # Prettier
 
 ---
 
-## 9. 引き継ぎ時にエンジニアが見るもの
+## 10. 引き継ぎ時にエンジニアが見るもの
 
 非エンジニアから「エンジニアに渡す」と言われたら、以下の状態を保証してから引き渡す:
 

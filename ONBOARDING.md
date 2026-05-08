@@ -424,18 +424,25 @@ gh auth status
 
 ---
 
-## Part 3: MCP（AI ツール接続）の設定（約5分）
+## Part 3: MCP（AI ツール接続）と Vercel トークンの設定（約5分）
 
-Claude Code（Code タブ）が Vercel や Neon を自動操作するには **MCP（Model Context Protocol）** という仕組みを使います。
+Claude Code（Code タブ）がデータベース操作などを自動で行うために **MCP（Model Context Protocol）** という仕組みを使います。
 
-テンプレートにはすでに設定ファイル（`.mcp.json`）が含まれており、Vercel と Neon の接続先が定義されています。やることは：
+このテンプレートでは:
 
-1. フォルダを開いたときの承認プロンプトで許可する
-2. `/mcp` コマンドで OAuth ログインする
+- **Neon（データベース）**: MCP コネクタ経由（`/mcp` で OAuth）
+- **Vercel（公開先）**: Personal Access Token を `.env.local` に保存する方式（`/setup` 実行時にやります）
+- **GitHub**: 2.4 でインストールした `gh` コマンドが担うので MCP 接続は不要
 
-の2ステップだけです。
+> 💡 **なぜ Vercel だけ違う方式？**
+> Vercel コネクタは OAuth 認証時にチームへのアクセス許可を選ぶ UI が分かりづらく、非エンジニアが「個人アカウント」で承認してしまうと Team のリソースが見えない事故が起こりやすいことが分かりました。Personal Access Token 方式なら `.env.local` だけ気にすれば良く、認証画面で迷うことがありません。
 
-> 💡 GitHub の操作は 2.4 でインストールした `gh` コマンドが担うため、GitHub の MCP 接続は不要です。
+このパートでやることは:
+
+1. フォルダを開いたときの **MCP（Neon）承認プロンプト** で許可する
+2. `/mcp` コマンドで Neon の OAuth ログインをする
+
+の2ステップだけです。Vercel のトークン発行は後の Part 4「`/setup` 実行」の中で Claude が案内してくれます。
 
 ---
 
@@ -471,17 +478,17 @@ Claude Code（Code タブ）が Vercel や Neon を自動操作するには **MC
 
 Claude Code が接続中の MCP サーバー一覧と接続ステータスを表示します。
 
-** 2. Vercel と Neon が一覧に表示されることを確認する**
+** 2. Neon が一覧に表示されることを確認する**
 
-正常に読み込まれていれば、それぞれサーバー名とツール数（例: `vercel (15 tools)`）が表示されます。
+正常に読み込まれていれば、`neon` というサーバー名とツール数（例: `neon (24 tools)`）が表示されます。
 
 認証が必要な場合はサーバー名の横に認証を促す表示が出ます。
 
 ** 3. 認証が必要な場合は画面の指示に従ってブラウザで承認する**
 
-Claude Code の画面に表示されるリンクまたはボタンをクリックすると**ブラウザが自動で開き**、Vercel または Neon の OAuth 認可画面に遷移します。
+Claude Code の画面に表示されるリンクまたはボタンをクリックすると**ブラウザが自動で開き**、Neon の OAuth 認可画面に遷移します。
 
-各サービスの認可ボタンをクリックして許可する。
+認可ボタンをクリックして許可する。承認画面で **「SOBA AI Driven」組織** へのアクセスにチェックが入っていることを確認してください（個人アカウントだけだと組織のプロジェクトにアクセスできません）。
 
 ブラウザの認証が完了すると Claude Code に自動で戻り、接続が確立されます。
 
@@ -493,7 +500,7 @@ Claude Code の画面に表示されるリンクまたはボタンをクリッ�
 /mcp
 ```
 
-Vercel と Neon のどちらもツール数が表示されていれば接続完了です。
+Neon のツール数が表示されていれば接続完了です。
 
 ---
 
@@ -577,7 +584,19 @@ C:\Users\<ユーザー名>\Documents\GitHub\my-first-mvp
 /setup を実行して
 ```
 
-** 2. Claude の質問に答える**
+** 2. Vercel アクセストークンの発行を案内されるので発行する**
+
+Claude が最初に Vercel のアクセストークン発行手順を案内してきます。指示通り:
+
+1. ブラウザで https://vercel.com/account/tokens を開く
+2. 「Create Token」をクリック
+3. Token Name: `claude-my-first-mvp` など、Scope: **「SOBA AI Driven」を選択**（重要）、Expiration: 任意
+4. 表示された `vcp_...` で始まる長い文字列をコピー
+5. Claude Desktop のチャットに貼り付け
+
+> ⚠️ トークンは1回しか表示されません。コピーし忘れたらもう一度発行し直してください。
+
+** 3. Claude の質問に答える**
 
 Claude が順番に質問してくる。ハンズオンでは以下の例で回答してください:
 
@@ -589,16 +608,17 @@ Claude が順番に質問してくる。ハンズオンでは以下の例で回�
 | 成功条件は？ | 月末集計が手作業ゼロになる |
 | フロントエンドは？ | Web画面 |
 
-** 3. Claude の自動処理が完了するのを待つ**
+** 4. Claude の自動処理が完了するのを待つ**
 
 回答後、Claude が以下を自動で実行する（数分かかります）:
 
-1. ✅ Vercel project 作成
-2. ✅ Neon DB project + 3 ブランチ作成
-3. ✅ 環境変数の設定
-4. ✅ `npm install`
-5. ✅ 初回コミット & ステージング push
-6. ✅ ステージング URL 表示
+1. ✅ `.env.local` に `VERCEL_TOKEN` 保存
+2. ✅ Vercel project 作成（CLI/API 経由）
+3. ✅ Neon DB project + 3 ブランチ作成（MCP 経由）
+4. ✅ 環境変数の設定（Vercel CLI/API で各環境）
+5. ✅ `npm install`
+6. ✅ 初回コミット & ステージング push
+7. ✅ ステージング URL 表示
 
 ---
 
@@ -667,28 +687,38 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 - インストール後に PowerShell を再起動していない → PowerShell を**一度閉じて開き直す**
 - それでもダメなら PC を再起動して PATH を反映
 
-### `/mcp` コマンドで Vercel / Neon が表示されない
+### `/mcp` コマンドで Neon が表示されない
 
 - フォルダを開いた時に MCP 承認ダイアログで「Allow」を押し忘れた → Code タブでフォルダを開き直す
 - `.mcp.json` が存在しない → リポジトリのルートに `.mcp.json` があるか確認。ない場合は案内役に相談
 - Claude Desktop が古い可能性 → 最新版に更新して再起動
 
-### MCP の OAuth 認可画面でエラーが出る
+> 💡 Vercel は `/mcp` には出ません（トークン方式に変更したため）。Vercel 関連のトラブルは「`/setup` 中に Vercel エラー」のセクション参照。
 
-- ブラウザで Vercel / Neon に**先にサインイン**してから、`/mcp` の「Sign in」を押す
+### MCP（Neon）の OAuth 認可画面でエラーが出る
+
+- ブラウザで Neon に**先にサインイン**してから、`/mcp` の「Sign in」を押す
 - `/mcp` で「Disconnect」→ 再度「Sign in」で大抵直る
-- 社内ネットワークで `claude.com`、`vercel.com`、`neon.tech` がブロックされていないか IT に確認
+- 承認画面で「SOBA AI Driven」組織にチェックを入れ忘れると組織のプロジェクトが見えない → 一度 Disconnect → 再度 Sign in でやり直し
+- 社内ネットワークで `claude.com`、`neon.tech` がブロックされていないか IT に確認
+
+### `/setup` 中に Vercel エラー（401 / 403 / Forbidden）
+
+- Vercel トークンが間違っているか期限切れ → https://vercel.com/account/tokens で新しいトークンを発行し、Claude に渡し直す
+- トークン発行時の Scope に「SOBA AI Driven」が含まれていない → Token を Revoke して、Scope を正しく選んで再発行
+- Free / Hobby プランの制限に当たっている可能性 → 案内役が確認
 
 ### Claude Desktop でフォルダがマウントできない
 
 - ホームディレクトリ外（Dドライブ等）にある → ホーム配下に移動
 - フォルダパスに日本語/スペースが含まれる → 英数字のみのパスに変更推奨
 
-### `/setup` 中にエラー
+### `/setup` 中にエラー（その他）
 
-- MCP が未認証になっている → チャット欄で `/mcp` を入力し、Vercel・Neon が「Authenticated」になっているか確認。なっていなければ「Sign in」で再接続
-- Vercel/Neon の Free tier 制限 → 案内役が確認
+- Neon MCP が未認証になっている → チャット欄で `/mcp` を入力し、Neon が「Authenticated」になっているか確認。なっていなければ「Sign in」で再接続
+- Neon の Free tier 制限 → 案内役が確認
 - GitHub Organization・Vercel Team・Neon Organization への招待を**まだ承認していない**ケースが多い → 受講者のメールを確認
+- Vercel エラーは前述の「`/setup` 中に Vercel エラー」セクション参照
 
 ### `npm install` が失敗する
 
