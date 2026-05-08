@@ -356,96 +356,142 @@ GitHub Desktop に戻り、「Finish」をクリック
 
 ---
 
-## Part 3: MCP（コネクタ）の接続（約5分）
+### 2.4 GitHub CLI（gh）をインストールする
 
-GitHub・Vercel・Neon を Claude が操作できるようにします。Claude Desktop 標準の **コネクタ** 機能で OAuth ログインするだけで完了します。トークンを手で貼り付ける必要はありません。
+GitHub CLI（`gh`）は、Claude が GitHub のリポジトリ操作（ブランチ作成・push 等）をターミナルから行うために使います。
 
-> 💡 Part 1 で各サービスにサインイン済みであれば、ほぼクリックだけで完了します。
+#### 方法A: winget を使う（推奨）
+
+タスクバーの検索欄に `powershell` と入力し、**「Windows PowerShell」** を右クリック → **「管理者として実行」** を選ぶ。
+
+以下を貼り付けて **Enter**:
+
+```powershell
+winget install GitHub.cli --silent --accept-source-agreements --accept-package-agreements
+```
+
+完了後、PowerShell を閉じて開き直す。
+
+#### 方法B: インストーラーを使う（PowerShell 不要）
+
+** 1. ダウンロードページを開く**
+
+下記リンクを新しいタブで開いてください。
+
+https://cli.github.com/
+
+** 2. 「Download for Windows」をクリックしてダウンロードする**
+
+** 3. ダウンロードした `.msi` ファイルをダブルクリックして実行する**
+
+インストーラーが起動したら **「Next」→「Install」** と進み、完了画面で **「Finish」** を押す。
+
+PC を一度再起動して PATH を更新する。
+
+#### インストール確認とサインイン
+
+** 1. PowerShell を起動し、インストールを確認する**
+
+```powershell
+gh --version
+```
+
+`gh version 2.x.x` のようなバージョン番号が返ってきたら OK。
+
+** 2. GitHub にサインインする**
+
+```powershell
+gh auth login --web
+```
+
+「What account do you want to log into?」と聞かれたら **「GitHub.com」** を選ぶ（矢印キー＋Enter）。
+
+「How would you like to authenticate?」は **「Login with a web browser」** を選ぶ。
+
+ブラウザが開いて GitHub の認可画面が表示される。**「Authorize github」** をクリックする。
+
+** 3. サインインを確認する**
+
+PowerShell で以下を実行:
+
+```powershell
+gh auth status
+```
+
+`Logged in to github.com as <あなたのユーザー名>` と表示されれば完了。
 
 ---
 
-### 3.1 コネクタ 画面を開く
+## Part 3: MCP（AI ツール接続）の設定（約5分）
 
-** 1. Claude Desktop を起動する**
+Claude Code（Code タブ）が Vercel や Neon を自動操作するには **MCP（Model Context Protocol）** という仕組みを使います。
 
-** 2. 画面左下のアイコンをクリック → **「設定」** をクリック（または `Ctrl + ,`）**
+テンプレートにはすでに設定ファイル（`.mcp.json`）が含まれており、Vercel と Neon の接続先が定義されています。やることは：
 
-** 3. 左メニューから **「コネクタ」** をクリックする**
+1. フォルダを開いたときの承認プロンプトで許可する
+2. `/mcp` コマンドで OAuth ログインする
 
+の2ステップだけです。
 
-
----
-
-### 3.2 GitHub を接続する
-
-** 1. GitHub連携の「連携/連携させる」をクリックする**
-
-** 2. [Authorize]をクリックする**
-
-** 3. [デスクトップアプリを開く]をクリックする**
-
-** 4. GitHub連携が[接続済み]となっていればOK**
-
+> 💡 GitHub の操作は 2.4 でインストールした `gh` コマンドが担うため、GitHub の MCP 接続は不要です。
 
 ---
 
-### 3.3 Vercel を接続する
+### Part 3 の実施タイミング
 
-** 1. [コネクタを参照] をクリックする**
-
-** 2. Vercel を検索し、＋をクリックする**
-
-** 3. Vercelの「連携/連携させる」をクリックする**
-
-** 4. ブラウザの認可画面で承認する**
-
-ブラウザが開いて Vercel の認可画面が表示される。**「Allow」** をクリック
-
-** 5. [デスクトップアプリを開く]をクリックする**
-
-** 6. Vercelが[設定]となっていればOK**
-
+> ⚠️ **この Part 3 は Part 4.3「Claude Desktop でフォルダを開く」の直後に行います。**
+> 今は読み流してください。
 
 ---
 
-### 3.4 Neon を接続する
+### 3.1 フォルダを開いたときの承認プロンプト
 
-** 1. Neonの「連携/連携させる」をクリックする**
+** 1. プロジェクトフォルダを Code タブで開く（Part 4.3 で実施）**
 
-** 2. [Approve]をクリックする**
+** 2. MCP の承認プロンプトが表示されたら許可する**
 
-** 3. [Authorize]をクリックする**
+フォルダを開くと Claude Code が `.mcp.json` を検出し、MCP サーバーの使用について承認を求めるプロンプトを表示します。
 
-** 4. [デスクトップアプリを開く]をクリックする**
+表示されたプロンプトで **許可**（Yes / Allow 等）を選択する。
 
-** 5. Neonが[設定]となっていればOK**
-
+> 💡 このプロンプトはセキュリティ上の理由で毎回ではなく初回のみ表示されます。
+> プロンプトが表示されなかった場合は次の手順に進んでください。
 
 ---
 
-### 3.5 動作確認
+### 3.2 `/mcp` コマンドで OAuth 認証する
 
-** 1. Code タブでテスト用フォルダを開く**
-
-Claude Desktop の **「Code」** タブを選択し、適当なフォルダ（後で消す `~/test` など）を開く。
-
-** 2. 3つの接続を確認する**
-
-チャット欄に以下を順に入力し、それぞれリストが返ってくることを確認する:
+** 1. チャット欄に `/mcp` と入力して Enter**
 
 ```
-私の GitHub のリポジトリ一覧を教えて
+/mcp
 ```
 
-```
-Vercel の私のプロジェクト一覧を教えて
-```
+Claude Code が接続中の MCP サーバー一覧と接続ステータスを表示します。
+
+** 2. Vercel と Neon が一覧に表示されることを確認する**
+
+正常に読み込まれていれば、それぞれサーバー名とツール数（例: `vercel (15 tools)`）が表示されます。
+
+認証が必要な場合はサーバー名の横に認証を促す表示が出ます。
+
+** 3. 認証が必要な場合は画面の指示に従ってブラウザで承認する**
+
+Claude Code の画面に表示されるリンクまたはボタンをクリックすると**ブラウザが自動で開き**、Vercel または Neon の OAuth 認可画面に遷移します。
+
+各サービスの認可ボタンをクリックして許可する。
+
+ブラウザの認証が完了すると Claude Code に自動で戻り、接続が確立されます。
+
+> 💡 ブラウザが自動で開かない場合は、画面に表示された URL をコピーしてブラウザのアドレスバーに貼り付けてください。
+
+** 4. `/mcp` を再度実行して接続を確認する**
 
 ```
-Neon にある私の DB プロジェクト一覧を教えて
+/mcp
 ```
 
-3つともリストが返ってきたら接続完了。エラーが出る場合は **設定 → コネクタ** で対象の Connector を **「Disconnect」→「Connect」** で再接続してください。
+Vercel と Neon のどちらもツール数が表示されていれば接続完了です。
 
 ---
 
@@ -619,19 +665,17 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 - インストール後に PowerShell を再起動していない → PowerShell を**一度閉じて開き直す**
 - それでもダメなら PC を再起動して PATH を反映
 
-### コネクタ 画面に GitHub / Vercel / Neon が見当たらない
+### `/mcp` コマンドで Vercel / Neon が表示されない
 
-- 検索欄でヒットしない場合は **Custom connector** から URL を直接入力
-  - Vercel: `https://mcp.vercel.com`
-  - Neon: `https://mcp.neon.tech/sse`
-  - GitHub: 公式 Connector が見当たらない場合のみ Custom で `https://api.githubcopilot.com/mcp/`
+- フォルダを開いた時に MCP 承認ダイアログで「Allow」を押し忘れた → Code タブでフォルダを開き直す
+- `.mcp.json` が存在しない → リポジトリのルートに `.mcp.json` があるか確認。ない場合は案内役に相談
 - Claude Desktop が古い可能性 → 最新版に更新して再起動
 
-### OAuth 認可画面でエラーが出る
+### MCP の OAuth 認可画面でエラーが出る
 
-- ブラウザで GitHub / Vercel / Neon に**先にサインイン**してから、Claude Desktop の Connect ボタンを押す
-- Connector の **Disconnect → 再 Connect** で大抵直る
-- 社内ネットワークで `claude.com`、`vercel.com`、`neon.tech`、`github.com` がブロックされていないか IT に確認
+- ブラウザで Vercel / Neon に**先にサインイン**してから、`/mcp` の「Sign in」を押す
+- `/mcp` で「Disconnect」→ 再度「Sign in」で大抵直る
+- 社内ネットワークで `claude.com`、`vercel.com`、`neon.tech` がブロックされていないか IT に確認
 
 ### Claude Desktop でフォルダがマウントできない
 
@@ -640,7 +684,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ### `/setup` 中にエラー
 
-- Connector が Disconnected になっている → 設定 → コネクタ で再接続
+- MCP が未認証になっている → チャット欄で `/mcp` を入力し、Vercel・Neon が「Authenticated」になっているか確認。なっていなければ「Sign in」で再接続
 - Vercel/Neon の Free tier 制限 → 案内役が確認
 - GitHub Organization・Vercel Team・Neon Organization への招待を**まだ承認していない**ケースが多い → 受講者のメールを確認
 

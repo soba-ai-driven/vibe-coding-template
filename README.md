@@ -28,14 +28,23 @@
 - ✅ Neon アカウント（GitHub サインインで作成、Organization 招待済み）
 - ✅ [Claude Desktop](https://claude.com/download) インストール済み
 - ✅ [GitHub Desktop](https://desktop.github.com/) インストール済み
-- ✅ Claude Desktop の **Settings → Connectors** で **GitHub / Vercel / Neon** の3つを接続済み（OAuth ログイン）
+- ✅ [GitHub CLI（gh）](https://cli.github.com/) インストール済み（`gh auth status` でログイン済みを確認）
 
 ### Step 2. 自分のリポジトリを作る
 
 1. GitHub の `vibe-coding-template` リポジトリのページを開く
+
+https://github.com/soba-ai-driven/vibe-coding-template
+
+
 2. 右上の緑色のボタン **「Use this template」** → **「Create a new repository」**
+
 3. リポジトリ名を入力（例: `kaidan-mvp`）
-4. **Create repository** をクリック
+
+4. Choose visibility で **Private** を選択
+
+5. **Create repository** をクリック
+
 
 ### Step 3. パソコンに持ってくる（clone）
 
@@ -48,7 +57,9 @@
 1. Claude Desktop を起動
 2. 上部または左サイドの **「Code」** タブに切り替え
 3. **「Open folder」** → さっき clone したフォルダを選ぶ
-4. Claude が自己紹介してくれる
+4. MCP サーバーの承認を求めるプロンプトが表示されたら**許可**する
+5. チャット欄に `/mcp` と入力して Enter → Vercel・Neon が表示されたら画面の指示に従いブラウザで OAuth 認証する
+6. Claude が自己紹介してくれる
 
 ### Step 5. セットアップを実行
 

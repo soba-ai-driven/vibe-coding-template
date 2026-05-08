@@ -15,7 +15,8 @@ Vercel/Neon プロジェクトを作成し、ステージング環境までを�
 - [ ] GitHub アカウントが作成済み、組織に招待済み
 - [ ] Vercel に GitHub サインイン済み、Team に参加済み
 - [ ] Neon に GitHub サインイン済み、Organization に参加済み
-- [ ] Claude Desktop の Settings → Connectors で GitHub / Vercel / Neon が OAuth 接続済み
+- [ ] Claude Desktop の Settings → Connectors で Vercel / Neon が OAuth 接続済み（Code タブ用は `.mcp.json` 経由で自動接続）
+- [ ] `gh` コマンドが使える（`gh auth status` でログイン済みを確認）
 - [ ] Node.js + Git for Windows がローカルにインストール済み（`node -v` / `git -v` で確認可能）
 - [ ] このリポジトリが `~/Documents/GitHub/<repo-name>` に clone されている
 - [ ] Claude Desktop の Code タブでこのフォルダが開かれている
@@ -95,10 +96,27 @@ Q5. フロントエンドは何にしますか？
 
 ### ステップ4: GitHub リポジトリ情報を取得
 
-GitHub MCP を使って:
-- リポジトリ名（owner/name）
-- デフォルトブランチ
-- staging ブランチが存在するかチェック → 無ければ作成
+`gh` CLI を使って:
+
+```bash
+gh repo view --json name,owner,defaultBranchRef
+gh repo view --json url
+```
+
+- リポジトリ名（owner/name）とデフォルトブランチを取得
+- staging ブランチが存在するかチェック:
+
+```bash
+git ls-remote --heads origin staging
+```
+
+存在しなければ作成:
+
+```bash
+git checkout -b staging
+git push origin staging
+git checkout -
+```
 
 ### ステップ5: Vercel プロジェクト作成
 
