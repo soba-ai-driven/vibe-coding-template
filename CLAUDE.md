@@ -91,6 +91,14 @@
 `main` への直接 push は `.claude/settings.json` でブロックされています。
 本番リリースは「ステージングで動作確認 → 人間が staging を main にマージ → 人間が main を push」の手順。
 
+### GitHub 操作の制限
+
+**`git push` や `gh` コマンドによる変更は `github.com/soba-ai-driven` 配下のリポジトリのみ許可。**
+
+- push 前に必ず `git remote get-url origin` で宛先が `soba-ai-driven` であることを確認する
+- `.claude/git-hooks/pre-push` が git hook として設定されており、他オーガニゼーションへの push はブロックされる（`/setup` 時に `git config core.hooksPath .claude/git-hooks` で有効化）
+- `gh repo create` / `gh pr create` 等も `soba-ai-driven` 配下のリポジトリのみ対象とする
+
 ---
 
 ## 4. テスト方針

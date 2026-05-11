@@ -1,0 +1,16 @@
+#!/bin/sh
+# soba-ai-driven 以外のリモートへの push を禁止する
+ALLOWED_ORG="soba-ai-driven"
+REMOTE_NAME="$1"
+REMOTE_URL=$(git remote get-url "$REMOTE_NAME" 2>/dev/null)
+
+case "$REMOTE_URL" in
+  *"$ALLOWED_ORG"*)
+    # OK: soba-ai-driven のリポジトリへの push は許可
+    ;;
+  *)
+    echo "Error: Push to '$REMOTE_URL' is not allowed." >&2
+    echo "Only repositories under github.com/$ALLOWED_ORG are permitted." >&2
+    exit 1
+    ;;
+esac

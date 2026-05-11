@@ -118,7 +118,7 @@ Q5. フロントエンドは何にしますか？
 このドキュメントはプロジェクトの最上位の文脈情報です。要件や設計が変わった時はここから見直すこと。
 ```
 
-### ステップ4: GitHub リポジトリ情報を取得
+### ステップ4: GitHub リポジトリ情報を取得・git hook を有効化
 
 `gh` CLI を使って:
 
@@ -128,7 +128,15 @@ gh repo view --json url
 ```
 
 - リポジトリ名（owner/name）とデフォルトブランチを取得
-- staging ブランチが存在するかチェック:
+- **オーガニゼーションが `soba-ai-driven` であることを確認する**。異なる場合はユーザーに確認を求めて処理を止める
+
+push 制限の git hook を有効化:
+
+```bash
+git config core.hooksPath .claude/git-hooks
+```
+
+staging ブランチが存在するかチェック:
 
 ```bash
 git ls-remote --heads origin staging
@@ -208,7 +216,53 @@ AUTH_SECRET=base64-encoded-string
 AUTH_URL=http://localhost:3000
 ```
 
-### ステップ9: 依存インストール
+### ステップ9: Backlog 連携設定（任意）
+
+ユーザーに確認する:
+
+```
+Backlog を使っていますか？連携する場合は API キーを発行してください（1分で終わります）。
+
+スペースのドメイン（例: your-space.backlog.jp）と、
+以下の手順で発行した API キーを教えてください:
+  1. https://<スペース名>.backlog.jp/EditApiSettings.action を開く
+  2. 「APIキーの登録」→ メモに「claude-<このリポジトリ名>」→「登録」
+  3. 発行されたキーをコピーしてこのチャットに貼り付け
+
+Backlog を使わない場合は「スキップ」と言ってください。
+```
+
+**スキップ**の場合 → このステップを飛ばして次へ。
+
+**連携する**場合、以下を順に実行:
+
+受け取った情報を `.env.local` に追記:
+```
+BACKLOG_DOMAIN=<スペース名>.backlog.jp
+BACKLOG_API_KEY=<受け取った値>
+```
+
+`.mcp.json` に Backlog の設定を追記（neon の設定は残したまま追加する）:
+```json
+"backlog": {
+  "command": "npx",
+  "args": ["-y", "@nulab/backlog-mcp-server@latest"],
+  "env": {
+    "BACKLOG_DOMAIN": "<スペース名>.backlog.jp",
+    "BACKLOG_API_KEY": "<受け取った値>"
+  }
+}
+```
+
+`.mcp.json` を gitignore してトラッキングを外す（API キーをコミットしないため）:
+```bash
+echo '.mcp.json' >> .gitignore
+git rm --cached .mcp.json
+```
+
+ユーザーに伝える: 「Backlog の設定完了しました。`.mcp.json` はローカルのみの管理になります。Claude Desktop を再起動すると Backlog MCP が使えるようになります。」
+
+### ステップ10: 依存インストール
 
 ```bash
 npm install
@@ -216,7 +270,7 @@ npm install
 
 エラーが出たらユーザーに見せて、解決策を提示。
 
-### ステップ10: フロントエンド種別ごとの追加処理
+### ステップ11: フロントエンド種別ごとの追加処理
 
 Q5 の回答に応じて分岐。CLAUDE.md の「7. パターン集」を参照して必要な依存を追加し、最小限のスキャフォールドを作る:
 
@@ -227,13 +281,13 @@ Q5 の回答に応じて分岐。CLAUDE.md の「7. パターン集」を参照�
 - E (Chatwork): `src/app/api/chatwork/webhook/route.ts` の雛形作成
 - F (その他): ユーザーに詳細をヒアリングし、対応可否を判断
 
-### ステップ11: 初期DBスキーマ・migration
+### ステップ12: 初期DBスキーマ・migration
 
 Auth.js を使う前提で `src/db/schema.ts` に Auth.js v5 用テーブル（users, accounts, sessions, verificationTokens）を追記。
 `npm run db:generate` で `drizzle/0000_initial.sql` を生成。
 development branch に `npm run db:migrate` で適用。
 
-### ステップ12: 初回コミットとデプロイ
+### ステップ13: 初回コミットとデプロイ
 
 ```bash
 git add .
@@ -248,7 +302,7 @@ git commit -m "chore: initial setup via /setup skill
 git push origin staging
 ```
 
-### ステップ13: デプロイ完了を待つ
+### ステップ14: デプロイ完了を待つ
 
 Vercel REST API でデプロイステータスを polling（最大5分）:
 
@@ -261,7 +315,7 @@ curl -H "Authorization: Bearer $VERCEL_TOKEN" \
 
 完了したら `.deployments[0].url` をステージング URL として取得。
 
-### ステップ14: 意思決定ログを書く
+### ステップ15: 意思決定ログを書く
 
 `ai/doc/03-decisions.md` に追記:
 
@@ -283,7 +337,7 @@ Next.js 15 (App Router) + TypeScript + Drizzle ORM + Auth.js v5 + Tailwind v4 + 
 このスタックで MVP を構築する。引き継ぎ後のエンジニアもこの前提で開発継続。
 ```
 
-### ステップ15: 完了レポート
+### ステップ16: 完了レポート
 
 ユーザーに以下を表示:
 
