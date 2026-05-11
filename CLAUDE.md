@@ -13,6 +13,8 @@
 - ユーザーは Git の細かい操作を理解していません。コミット・プッシュもあなたが代行
 - 「やることがなければ、`ai/doc/02-requirements.md` の未対応要求を上から消化してください」
 - マネージャー兼エージェントオーケストレーター。実装は細かくタスク分解する
+- **質問は1問ずつ**: 複数質問を箇条書きで一度に投げない。1問送って回答を得てから次へ。選択肢がある質問は option を提示する
+- **事前確認は最小限**: 「進めていいですか？」型の確認は避け、自律的に実行→事後報告。ただし不可逆な破壊的操作（force push、本番DB変更等）は確認する
 
 ---
 
@@ -82,14 +84,28 @@
 
 ## 3. デプロイルール
 
-| 操作 | 誰が |
+| 操作 | いつ実行するか |
 |---|---|
-| `git push origin staging` | **Claude が行う**（ステージング自動デプロイ） |
-| `git push origin main` | **人間のみ**（本番反映。Claude は禁止） |
-| `git push --force` | **禁止** |
+| `git push origin staging` | コード変更があったら毎回 Claude が実行（お試し公開） |
+| `staging → main マージ + `git push origin main` | ユーザーが**「本番に反映して」「公開して」「リリースして」**等の明示的な本番反映指示を出したときのみ Claude が実行 |
+| `git push --force` | **禁止**（hook と settings.json でブロック） |
 
-`main` への直接 push は `.claude/settings.json` でブロックされています。
-本番リリースは「ステージングで動作確認 → 人間が staging を main にマージ → 人間が main を push」の手順。
+### 非エンジニア向け運用ルール（重要）
+
+**PR・マージ・push 等の技術用語をユーザーに使わせない。** ユーザーには「お試し（ステージング）」「本番」の2語のみ使い、操作は全部 Claude が代行する。
+
+- コード変更したら staging に自動デプロイし、「お試し URL で確認してください: https://...」とだけ伝える
+- 「OK」「いいね」「動いた」等の確認は**お試し公開の完了確認**として扱う。本番反映はしない
+- ユーザーが**「本番に反映して」「公開して」「リリースして」「皆が使えるようにして」**等を明示したら、以下を Claude が裏で実行する:
+  ```bash
+  git checkout main
+  git merge staging
+  git push origin main
+  git checkout staging
+  ```
+- 本番反映後は「本番に公開しました: https://...」と URL を伝えて完了
+
+「PR を作ってください」「マージしてください」「main に push してください」のような依頼は**絶対にしない**。
 
 ### GitHub 操作の制限
 
@@ -101,11 +117,31 @@
 
 ---
 
-## 4. テスト方針
+## 4. テスト方針・ブラウザデバッグ
+
+### 4.1 自動テスト
 
 - **テストファースト**: バグ修正は再現テストを先に書いてから直す
 - **新規実装には必ず Vitest の unit test を書く** (`src/**/*.test.ts(x)` を該当コードと同じディレクトリに配置)
 - **UI/フロー変更には Playwright の E2E spec を書く** (`playwright/*.spec.js`)
+
+### 4.2 ブラウザでのデバッグ運用
+
+UI が絡む問題や「動かない」報告を受けたら、推測で直さず **Playwright MCP** と **Chrome DevTools MCP** の両方を活用してブラウザ上で実際の挙動を観察してから修正する:
+
+- **Playwright MCP** (`mcp__playwright__*`): 自動操作とアサーション。ユーザー操作の再現、ページ遷移、フォーム送信、スクリーンショット取得など
+- **Chrome DevTools MCP** (`mcp__chrome-devtools__*`): ランタイム観察。コンソールエラー、ネットワークリクエスト、パフォーマンス計測、DOM スナップショットなど
+
+#### 標準デバッグフロー
+
+1. **再現する**: Playwright MCP でユーザーが詰まったページ・操作を再現する
+2. **観察する**: Chrome DevTools MCP で `list_console_messages`・`list_network_requests` を確認し、エラー/失敗リクエストを特定する
+3. **仮説を立てる**: コンソールログ・ネットワーク応答から原因を推測する
+4. **直す**: コードを修正
+5. **検証する**: Playwright MCP で再度操作を再現し、Chrome DevTools MCP でエラーがなくなったことを確認する
+6. **再現テストを残す**: Playwright spec として `playwright/*.spec.js` に追加し、デグレを防ぐ
+
+「ローカルで `npm run dev` 立てて、Playwright/Chrome DevTools MCP で開発サーバーを直接観察」が基本動作。本番/ステージング URL でも同じ流れで使える。
 - `npm test` がグリーンでないと commit しない（Husky が弾く）
 - E2E テストは Code タブのターミナルから `npm run test:e2e` で実行
 
