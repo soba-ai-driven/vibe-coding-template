@@ -163,3 +163,33 @@ GitHub / Vercel / Neon / Playwright の4つの MCP を非エンジニアに配�
 ## 新しい決定
 
 <!-- ここに追記 -->
+
+## 2026-05-11: push 制限の git hook を `.claude/git-hooks/` から `.husky/` へ移動
+
+### 文脈
+他オーガニゼーションへの誤 push を防ぐ pre-push hook を `.claude/git-hooks/pre-push` に置いていたが、`core.hooksPath` の手動設定（`git config core.hooksPath .claude/git-hooks`）が必要だった。
+
+非エンジニアがテンプレートから派生したリポジトリを clone した直後はこの設定が走らず、最初の `npm install` または `/setup` 完了までガードが効かない。`/setup` 内で `git config` を呼ぶ実装にしていたが、`/setup` を経由しない経路（GitHub Desktop で開いて手動 push など）では完全に素通りする。
+
+### 採用案
+hook を `.husky/pre-push` に移動。package.json には既に `husky` が devDependency にあり、`"prepare": "husky"` も設定されている。したがって `npm install` が走った瞬間に Husky が自動で `core.hooksPath` を `.husky/` に向け、hook が即有効化される。
+
+合わせて以下を更新:
+- `.claude/skills/setup/SKILL.md`: 手動の `git config core.hooksPath` 呼び出しを削除（Husky に任せる）
+- `CLAUDE.md` セクション3: hook の所在と有効化方法の記述を更新
+
+### 不採用案と理由
+- `.claude/git-hooks/` のまま、`/setup` 内で `git config` を呼ぶ: `/setup` を経由しない非エンジニア（例: 既に作業中の派生リポを clone し直した、別マシンで開いた）は素通り。`/setup` は1回しか走らないので保証にならない
+- 両方に hook を置く（`.husky/` と `.claude/git-hooks/` の両方）: 二重管理。片方を更新し忘れて挙動が分岐するリスク
+
+### 結果として何が変わるか
+- 派生リポジトリで `npm install` を1回でも実行した時点で、Husky 経由で hook が自動有効化される
+- `/setup` が「git hook を有効化する」ステップを持たなくても済む
+- `.claude/git-hooks/` ディレクトリは削除される
+
+### 残課題
+- `npm install` 前の push（clone 直後など）は依然としてガードできない。ただし「Use this template」で派生したリポジトリは初期状態で origin が `soba-ai-driven` 配下にあるため、別 org への誤 push のリスクは限定的
+- もし `npm install` 前の保護も必要なら、`.gitconfig` を共有する別仕組み（例: テンプレに同梱した `setup-hooks.bat` を README で案内）を検討する
+
+### 関連
+- 親 PR: `chore/move-pre-push-hook-to-husky` ブランチ

@@ -96,7 +96,7 @@
 **`git push` や `gh` コマンドによる変更は `github.com/soba-ai-driven` 配下のリポジトリのみ許可。**
 
 - push 前に必ず `git remote get-url origin` で宛先が `soba-ai-driven` であることを確認する
-- `.claude/git-hooks/pre-push` が git hook として設定されており、他オーガニゼーションへの push はブロックされる（`/setup` 時に `git config core.hooksPath .claude/git-hooks` で有効化）
+- `.husky/pre-push` が git hook として登録されており、他オーガニゼーションへの push はブロックされる（`npm install` 実行時に Husky の `prepare` スクリプトが自動で有効化するため、追加設定は不要）
 - `gh repo create` / `gh pr create` 等も `soba-ai-driven` 配下のリポジトリのみ対象とする
 
 ---
