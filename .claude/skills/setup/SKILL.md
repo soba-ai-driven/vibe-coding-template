@@ -130,11 +130,7 @@ gh repo view --json url
 - リポジトリ名（owner/name）とデフォルトブランチを取得
 - **オーガニゼーションが `soba-ai-driven` であることを確認する**。異なる場合はユーザーに確認を求めて処理を止める
 
-push 制限の git hook を有効化:
-
-```bash
-git config core.hooksPath .claude/git-hooks
-```
+push 制限の git hook (`.husky/pre-push`) は、後続の `npm install`（ステップ10）で Husky が自動的に有効化する。ここでは何もしなくてよい。
 
 staging ブランチが存在するかチェック:
 
