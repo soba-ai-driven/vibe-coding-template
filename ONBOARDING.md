@@ -1,7 +1,6 @@
 # Claude環境セットアップハンズオン（初回オンボーディング）
 
 > このドキュメントは、非エンジニアが初めて vibe-coding-template を使う時の**ハンズオン台本**です。
-> 案内役（エンジニア）が読みながら一緒に進めることを想定しています。
 >
 > 所要時間: 約 60 分
 
@@ -12,21 +11,20 @@
 ### 受講者（非エンジニア）側
 
 - [ ] Windows 10 / 11 PC を持参（Home Edition でも可）
-- [ ] 管理者権限 or IT 部門の事前協力（winget でツールをインストールするため）
-- [ ] 個人メールアドレス1つ（GitHub 用）
+- [ ] Windowsの管理者権限 
 
 ### 案内役（エンジニア）側
 
 - [ ] GitHub Organization に invite できる権限
 - [ ] Vercel Team に invite できる権限
 - [ ] Neon Organization に invite できる権限
-- [ ] Claude Desktop の コネクタ 画面（設定 → コネクタ）の最新 UI を自分でも確認しておく（バージョンによって配置が変わるため）
+- [ ] Claude Desktop の 管理権限
 
 ---
 
 ## Part 1: アカウント整備（約30分）
 
-> ⏱️ 3つのサービスへのサインアップ＋招待承認が必要です。メール確認を挟むため、余裕を持って進めてください。
+> ⏱️ 4つのサービスへのサインアップ＋招待承認が必要です。メール確認を挟むため、余裕を持って進めてください。
 
 ---
 
@@ -36,19 +34,16 @@ GitHub は、作ったプログラムを保存・管理する場所です。ま�
 
 #### 手順
 
-** 1. サインアップページを開く**
-
-下記リンクを新しいタブで開いてください。
+** 1. 下記リンクを新しいタブで開いてください。**
 
 https://github.com/signup
 
-** 2. メールアドレスを選択(入力)する**
 
-「Continue with Google」をクリックする
+** 2. 「Continue with Google」をクリックする**
 
-**普段使っているメールアドレス**を入力して **「Continue」** を押す。
+soba-project.com のメールアドレスを入力して **「Continue」** をクリック。
 
-> ⚠️ 「Enter your email」と書かれた欄にメールアドレスを入力でも可ですが、ここではsoba-project.com のGoogle workspace を前提とします。
+>  「Enter your email」と書かれた欄にメールアドレスを入力でも可ですが、ここではsoba-project.com のGoogle workspace を前提とします。
 
 ** 3. Username 等を入力し[Create acccont]をクリック**
 
@@ -82,9 +77,7 @@ Vercel は、作ったアプリをインターネット上に公開するため�
 
 #### 手順
 
-** 1. サインアップページを開く**
-
-下記リンクを新しいタブで開いてください。
+** 1. 下記リンクを新しいタブで開いてください。**
 
 https://vercel.com/signup
 
@@ -111,7 +104,6 @@ https://vercel.com/signup
 
 
 ** 6. Let's build something new のページが表示されたら、[<-back] をクリック**
-
 
 ** 7. Vercel のダッシュボード（プロジェクト一覧画面）が表示されれば登録完了です。**
 
