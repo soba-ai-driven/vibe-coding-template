@@ -6,7 +6,7 @@
 
 ---
 
-## 事前チェック（前日までに）
+## 事前チェック
 
 ### 受講者（非エンジニア）側
 
@@ -216,6 +216,25 @@ https://claude.ai/
 - [ ] Claude にサインインできている（ https://claude.ai でチーム名「SOBA Project」が表示される）
 
 1つでもチェックできない場合は案内役に相談してください。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
@@ -448,6 +467,30 @@ gh auth status
 
 `Logged in to github.com as <あなたのユーザー名>` と表示されれば完了。
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 ## Part 3: 最初のプロジェクトを作る（約25分）
@@ -533,11 +576,7 @@ OS から「Claude がフォルダにアクセスしようとしています」�
 
 Claude がデータベース（Neon）を操作できるよう、ブラウザ経由で1回だけ認証します。
 
-** 1. チャット欄に `/mcp` と入力して Enter**
-
-```
-/mcp
-```
+** 1. チャット欄に `mcpの接続状況を確認して` と入力して Enter**
 
 Claude Code が接続中の MCP サーバー一覧を表示します。
 
@@ -650,6 +689,14 @@ Claude が以下を自動で行う:
 
 Claude が案内した URL を開き、Google ログインが動作することを確認する。
 
+
+
+ここまで出来れば完了です。
+あとは、READMEを見ながら何か作ってみましょう！
+
+https://github.com/soba-ai-driven/vibe-coding-template/blob/main/README.md
+
+
 ---
 
 ## トラブルシューティング
@@ -714,30 +761,3 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 - npm のレジストリブロック → IT に `registry.npmjs.org` の許可を依頼
 - Antivirus が `node_modules` 書き込みをブロック → IT に Node.js の例外追加を依頼
 
----
-
-## ハンズオン後のフォローアップ
-
-### 受講者へ渡す
-
-- [ ] このリポジトリの URL（自分の `my-first-mvp`）
-- [ ] vibe-coding-template の README.md と CLAUDE.md の場所
-- [ ] サポート窓口（Slack チャンネル等）
-
-### 1週間後にチェック
-
-- 自走で何か作れているか
-- どこで詰まっているか
-- ai/doc/ にドキュメントが書かれているか
-- Claude が `ai/doc/03-decisions.md` を更新しているか
-
-詰まりが多ければ CLAUDE.md やこの ONBOARDING.md を改訂。
-
----
-
-## 案内役へのメモ
-
-- 受講者は黒画面を見せられると萎える。Code タブ内で完結する見せ方を徹底（PowerShell は事前準備の `winget` 1回だけ）
-- API トークンを画面共有時に映さないよう注意
-- 「分からないところは Claude に聞いてね」を繰り返し伝える
-- 1回目は時間オーバーしがち。Part 1〜2 を事前準備として宿題化するのもアリ
