@@ -181,6 +181,39 @@ https://console.neon.tech/app/org-empty-waterfall-10829916/projects
 
 ---
 
+### 1.4 Claude（Team プラン）にサインアップする
+
+Claude はこのプロジェクトのメインツールです。チームの招待メールからサインアップします。
+
+> 🚦 **案内役の作業（事前）**: Claude の Team Admin 画面から受講者を招待しておく（受講者の **soba-project.com の Google アカウント**宛て）。
+
+#### 手順
+
+** 1. 件名が「You're invited to join SOBA Project on Claude」の招待メールを開く**
+
+** 2. 「Accept invite」ボタンをクリック**
+
+ブラウザが開き、Claude のサインアップ画面に遷移します。
+
+** 3. 「Continue with Google」をクリック**
+
+サインイン方法の選択画面で **「Continue with Google」** をクリック。
+
+> **soba-project.com の Google アカウント**でサインインしてください。
+
+** 4. Google アカウントで承認**
+
+Google の認可画面で承認すると、Claude のチームに参加完了。
+
+** 5. ブラウザで Claude にアクセスできることを確認**
+
+https://claude.ai/
+
+左下の名前をクリックし **「SOBA Project」**（チーム名）が選択できたら完了。
+
+
+---
+
 ### Part 1 完了チェック
 
 次の Part 2 に進む前に、以下を確認してください:
@@ -188,6 +221,7 @@ https://console.neon.tech/app/org-empty-waterfall-10829916/projects
 - [ ] GitHub にサインインできている（ https://github.com/soba-ai-driven/vibe-coding-template が表示できる）
 - [ ] Vercel にサインインできている（ https://vercel.com/soba-ai-driven が開ける）
 - [ ] Neon にサインインできている（ https://console.neon.tech/app/org-empty-waterfall-10829916/people が開ける）
+- [ ] Claude にサインインできている（ https://claude.ai でチーム名「SOBA Project」が表示される）
 
 1つでもチェックできない場合は案内役に相談してください。
 

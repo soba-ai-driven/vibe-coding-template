@@ -23,6 +23,7 @@
 
 - ✅ Windows PC（Home Edition でも可）
 - ✅ Node.js + Git for Windows インストール済み（`node -v` / `git -v` でバージョンが返ること）
+- ✅ Claude（Team プラン）に招待メールからサインアップ済み（soba-project.com の Google アカウントで参加、https://claude.ai でチーム名「SOBA Project」が見える）
 - ✅ GitHub アカウント（組織に招待されていること）
 - ✅ Vercel アカウント（GitHub サインインで作成、Team 招待済み）
 - ✅ Neon アカウント（GitHub サインインで作成、Organization 招待済み）
