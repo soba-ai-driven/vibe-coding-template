@@ -185,7 +185,7 @@ curl -H "Authorization: Bearer $VERCEL_TOKEN" "https://api.vercel.com/v9/project
 
 **トークンが無い・期限切れの場合**: ユーザーに https://vercel.com/account/tokens でトークンを再発行してもらい、`.env.local` の `VERCEL_TOKEN` を更新する。
 
-### 6.2 Neon: MCP コネクタ方式（継続）
+### 6.2 Neon: MCP コネクタ方式
 
 **Neon は MCP コネクタ（`.mcp.json` 経由）を使う。** `run_sql`、`prepare_database_migration`、`list_projects` 等の便利ツールが揃っている。OAuth 認証 UI も Vercel と違って組織スコープが最初から見える挙動なので、非エンジニアでも詰まりにくい。
 
